@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            var socket = io();
+            socket.on('user_connected', function(data) {
+                for(const key in data['control']) {
+                    $(`#${key}`).val(data['control'][key]);
+                }
+                document.querySelector('button').addEventListener('click', function() {
+                    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    var source = audioCtx.createBufferSource();
+                    audioCtx.decodeAudioData(data['audio']).then(function(buffer) {
+                        console.log(buffer);
+                        source.buffer = buffer;
+                        source.connect(audioCtx.destination);
+                        source.loop = true;
+                        source.start(0);
+                    });
+                });
+            });
+            $('#control').change(function(e) {
+                socket.emit('set_control', {
+                    "gain": $('#gain').val(),
+                    "echo": $('#echo').val(),
+                    "reverb": $('#reverb').val()
+                });
+                return false;
+            });
+            $('#control').submit(function(e) {
+                e.preventDefault(); // prevents page reloading
+            });
+            document.querySelector('button').addEventListener('click', function() {
+                socket.emit('user_join')
+                    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    var source = audioCtx.createBufferSource();
+                    audioCtx.decodeAudioData(data['audio']).then(function(buffer) {
+                        console.log(buffer);
+                        source.buffer = buffer;
+                        source.connect(audioCtx.destination);
+                        source.loop = true;
+                        source.start(0);
+                    });
+            });
+        });
+    </script>
+    <title>Document</title>
+</head>
+<body>
+    <form id="control" action="">
+        <button>Join Stream</button>
+        <input type="range" id="gain" min="0" max="10">
+        <input type="range" id="echo" min="0" max="10">
+        <input type="range" id="reverb" min="0" max="10">
+    </form>
+</body>
+</html>
