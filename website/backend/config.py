@@ -1,4 +1,4 @@
-PORT = 5000
+N_CHUNKS = 10
 
 default_control = {
     "gain": 10,
