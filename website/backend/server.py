@@ -8,6 +8,7 @@ from flask_cors import CORS
 import os
 import async_stream
 import time
+import subprocess
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'M,:Dhrd>U9Y/[fglzVr$f#={Y7PPvabElCt@CTi"I+9~Im+&F%h+O{g=oV#+%os'
@@ -16,23 +17,6 @@ socketio = SocketIO(app)
 CORS(app)
 conn_users = {}
 joined_users = {}
-
-def genHeader(sampleRate, bitsPerSample, channels):
-    datasize = 2000*10**6
-    o = bytes("RIFF",'ascii')                                               # (4byte) Marks file as RIFF
-    o += (datasize + 36).to_bytes(4,'little')                               # (4byte) File size in bytes excluding this and RIFF marker
-    o += bytes("WAVE",'ascii')                                              # (4byte) File type
-    o += bytes("fmt ",'ascii')                                              # (4byte) Format Chunk Marker
-    o += (16).to_bytes(4,'little')                                          # (4byte) Length of above format data
-    o += (1).to_bytes(2,'little')                                           # (2byte) Format type (1 - PCM)
-    o += (channels).to_bytes(2,'little')                                    # (2byte)
-    o += (sampleRate).to_bytes(4,'little')                                  # (4byte)
-    o += (sampleRate * channels * bitsPerSample // 8).to_bytes(4,'little')  # (4byte)
-    o += (channels * bitsPerSample // 8).to_bytes(2,'little')               # (2byte)
-    o += (bitsPerSample).to_bytes(2,'little')                               # (2byte)
-    o += bytes("data",'ascii')                                              # (4byte) Data Chunk Marker
-    o += (datasize).to_bytes(4,'little')                                    # (4byte) Data size in bytes
-    return o
 
 def read_in_chunks(file_object, chunk_size=1024):
     """Lazy function (generator) to read a file piece by piece.
@@ -120,17 +104,19 @@ def on_join():
         joined_users[new_user.id] = new_user
         print(f'{new_user.id} joined the stream')
         i_off = 0
-        header = genHeader(config.RATE, config.BITS_PER_SAMPLE, config.CHANNELS)
-        package = [header]
+        # header = genHeader(config.RATE, config.BITS_PER_SAMPLE, config.CHANNELS)
+        # package = [header]
         for audio in get_audio():
-            if i_off != config.N_CHUNKS:
-                package.append(audio)
-            else:
-                payload = b"".join(package)
-                socketio.emit('audio_get_chunk', {'audio': payload})
-                socketio.sleep(0)
-                package = [header]
-            i_off = (i_off + 1) % (config.N_CHUNKS + 1)
+            # if i_off != config.N_CHUNKS:
+            #     package.append(audio)
+            # else:
+            #     payload = b"".join(package)
+            #     socketio.emit('audio_get_chunk', {'audio': payload})
+            #     socketio.sleep(0)
+            #     package = [header]
+            # i_off = (i_off + 1) % (config.N_CHUNKS + 1)
+            socketio.emit('audio_get_chunk', {'audio': audio})
+            socketio.sleep(0.02)
 
 if __name__ == "__main__":
     ip = util.get_ip_address()
