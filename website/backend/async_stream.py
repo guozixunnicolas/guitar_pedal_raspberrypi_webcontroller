@@ -1,10 +1,11 @@
 import pyaudio
 import time
+import config
 
-WIDTH = 2
-CHANNELS = 2
-RATE = 44100
-CHUNK = 1024
+FORMAT = pyaudio.paInt32
+CHANNELS = config.CHANNELS
+RATE = config.RATE
+CHUNK = config.CHUNK
 data = b''
 
 def get_audio():
@@ -15,7 +16,7 @@ def get_audio():
         data = in_data
         return (in_data, pyaudio.paContinue)
 
-    stream = p.open(format=p.get_format_from_width(WIDTH),
+    stream = p.open(format=FORMAT,
                     channels=CHANNELS,
                     rate=RATE,
                     input=True,
