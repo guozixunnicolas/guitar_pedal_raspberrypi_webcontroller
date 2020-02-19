@@ -1,11 +1,11 @@
 #   Stream
-N_CHUNKS = 4
+N_CHUNKS = 1
 
 #   Pyaudio
 CHANNELS = 2
 RATE = 44100
 CHUNK = 1024
-BITS_PER_SAMPLE = 32
+BITS_PER_SAMPLE = 16
 
 default_control = {
     "gain": 10,
