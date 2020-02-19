@@ -3,6 +3,7 @@
 # Backends
 env/
 __pycache__
+.vscode
 
 # Frontends
 # dependencies
