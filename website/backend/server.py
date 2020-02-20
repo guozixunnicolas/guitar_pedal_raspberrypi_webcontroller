@@ -9,14 +9,19 @@ import os
 import async_stream
 import time
 import subprocess
+from pd_reader import Pd_Patch
+from pd_socket import Pd
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'M,:Dhrd>U9Y/[fglzVr$f#={Y7PPvabElCt@CTi"I+9~Im+&F%h+O{g=oV#+%os'
 app.debug = True
 socketio = SocketIO(app)
 CORS(app)
+
 conn_users = {}
 joined_users = {}
+conn_port = set()
+pd_users_process = {}
 
 def read_in_chunks(file_object, chunk_size=1024):
     """Lazy function (generator) to read a file piece by piece.
@@ -61,9 +66,10 @@ def get_users():
 
 @socketio.on("connect")
 def on_connect():
-    new_user = User(request.sid, request)
+    new_user = User(request.sid, request, util.unique_random_n_digits(4, conn_port))
     if new_user not in conn_users:
         conn_users[new_user.id] = new_user
+        conn_port.add(new_user.port)
         print(f'{new_user.id} connected')
         control = new_user.audio_conf
     else:
@@ -73,8 +79,19 @@ def on_connect():
 @socketio.on("disconnect")
 def on_disconnect():
     try:
+        #   Pop user from connected user dict, and kill related process and pd file created by it.
         disconnected_user: User
         disconnected_user = conn_users.pop(request.sid)
+        #   Remove the port allowing it to be used again
+        conn_port.remove(disconnected_user.port)
+        p = pd_users_process.pop(disconnected_user.id)
+        if p.poll() == None:
+            p.kill()
+            #   Delete custom pd file
+            try:
+                os.remove(f'./{disconnected_user.port}.pd')
+            except FileNotFoundError:
+                pass
         print(f'{request.sid} disconnected')
         print(f'emitting event user_disconnected {disconnected_user.as_json()}')
         socketio.emit('user_disconnected', {'user': disconnected_user.as_json()})
@@ -85,38 +102,46 @@ def on_disconnect():
 @socketio.on('set_control')
 def set_control(control_data: dict):
     #   Send an update event
-    if request.sid in conn_users:
-        print(f'{request.sid} updated his control')
+    user_id = request.sid
+    if user_id in conn_users:
+        print(f'{user_id} updated his control')
         cur_user: User
-        cur_user = conn_users.get(request.sid)
+        cur_user = conn_users.get(user_id)
         cur_user.audio_conf = control_data
-        print((conn_users.get(request.sid)).audio_conf)
+        print((conn_users.get(user_id)).audio_conf)
         print(f'emitting event update_control {cur_user.as_json()}')
         socketio.emit('update_control', {'user': cur_user.as_json()})
-    for control, value in control_data.items():
-        print(request.sid, control, value)
+        pd_socket = Pd('localhost', cur_user.port)
+        pd_socket.send(f'{control_data["gain"]} {control_data["echo"]} {control_data["reverb"]}')
+        for control, value in control_data.items():
+            print(user_id, control, value)
 
 @socketio.on('user_join')
 def on_join():
     # TODO
-    new_user = User(request.sid, request)
-    if new_user not in joined_users:
-        joined_users[new_user.id] = new_user
-        print(f'{new_user.id} joined the stream')
-        i_off = 0
-        # header = genHeader(config.RATE, config.BITS_PER_SAMPLE, config.CHANNELS)
-        # package = [header]
-        for audio in get_audio():
-            # if i_off != config.N_CHUNKS:
-            #     package.append(audio)
-            # else:
-            #     payload = b"".join(package)
-            #     socketio.emit('audio_get_chunk', {'audio': payload})
-            #     socketio.sleep(0)
-            #     package = [header]
-            # i_off = (i_off + 1) % (config.N_CHUNKS + 1)
-            socketio.emit('audio_get_chunk', {'audio': audio})
-            socketio.sleep(0.02)
+    user_id = request.sid
+    if user_id not in joined_users and user_id in conn_users:
+        user: User
+        user = conn_users[user_id]
+        joined_users[user_id] = user
+        base_pd_path = './base.pd'
+        user_pd_path = f'./{user.port}.pd'
+        print(f'{user.id} joined the stream')
+        #   Set new pd patch file
+        pd_patch = Pd_Patch(base_pd_path)
+        pd_patch.set_port_netreceive(f'{user.port}', user_pd_path)
+        #   Open new pd subprocess with new pd patch
+        if user_id not in pd_users_process:
+            print(f'Opening new pd process on port {user.port}')
+            p = subprocess.Popen(['pd', '-nogui', user_pd_path])
+            pd_users_process[user_id] = p
+        #   Send default pd input
+        pd_socket = Pd('localhost', user.port)
+        pd_socket.send_async(f'{user.audio_conf["gain"]} {user.audio_conf["echo"]} {user.audio_conf["reverb"]}', repeat_until_connect=True)
+
+
+
+        
 
 if __name__ == "__main__":
     ip = util.get_ip_address()
