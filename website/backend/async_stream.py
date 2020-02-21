@@ -1,6 +1,7 @@
 import pyaudio
 import time
 import config
+import sys
 
 FORMAT = pyaudio.paInt16
 CHANNELS = config.CHANNELS
@@ -10,7 +11,7 @@ data = b''
 
 
 def genHeader(sampleRate, bitsPerSample, channels):
-    datasize = 2000*10**6
+    datasize = 49640
     o = bytes("RIFF",'ascii')                                               # (4byte) Marks file as RIFF
     o += (datasize + 36).to_bytes(4,'little')                               # (4byte) File size in bytes excluding this and RIFF marker
     o += bytes("WAVE",'ascii')                                              # (4byte) File type
@@ -53,5 +54,5 @@ def get_audio():
 
 if __name__ == "__main__":
     for data in get_audio():
-        print(data)
+        print(sys.getsizeof(data))
         time.sleep(1)
