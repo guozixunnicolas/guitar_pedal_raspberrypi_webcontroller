@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/music.css') }}" type="text/css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+            var context = new AudioContext();
+            var delayTime = 0;
+            var init = 0;
+            var audioStack = [];
+            var nextTime = 0;
+            var socket = io();
+            socket.on('user_connected', function(data) {
+                for(const key in data['control']) {
+                    $(`#${key}`).val(data['control'][key]);
+                }
+            });
+            socket.on('audio_get_chunk', async function(data) {
+                console.log(data['audio']);
+                context.decodeAudioData(data['audio'], function(buffer) {
+                    audioStack.push(buffer);
+                    if ((init != 0) || (audioStack.length > 10)) { // make sure we put at least 10 chunks in the buffer before starting
+                        init++;
+                        scheduleBuffers();
+                    }
+                }, function(err) {
+                    console.log("err(decodeAudioData): "+err);
+                });
+            });
+            function scheduleBuffers() {
+                while (audioStack.length) {
+                    var buffer = audioStack.shift();
+                    var source    = context.createBufferSource();
+                    source.buffer = buffer;
+                    source.connect(context.destination);
+                    if (nextTime == 0)
+                        nextTime = context.currentTime + 0.05;  /// add 50ms latency to work well across systems - tune this if you like
+                    source.start(nextTime);
+                    nextTime+=source.buffer.duration; // Make the next buffer wait the length of the last buffer before being played
+                };
+            }
+            $('#control').change(function(e) {
+                socket.emit('set_control', {
+                    "gain": $('#gain').val(),
+                    "echo": $('#echo').val(),
+                    "reverb": $('#reverb').val()
+                });
+                return false;
+            });
+            $('#control').submit(function(e) {
+                e.preventDefault(); // prevents page reloading
+            });
+            document.querySelector('button').addEventListener('click', function() {
+                socket.emit('user_join')
+            });
+        });
+    </script>
+    <title>Document</title>
+</head>
+<body>
+    <form id="control" action="">
+        <button>Join Stream</button>
+        <input type="range" id="gain" min="0" max="100" list="tickmarks" id="slider" orient="vertical">Gain
+        <input type="range" id="echo" min="0" max="100" list="tickmarks" id="slider" orient="vertical">Echo
+        <input type="range" id="reverb" min="0" max="100" list="tickmarks" id="slider" orient="vertical">Reverb
+        <datalist id="tickmarks">
+            <option value="0"></option>
+            <option value="10"></option>
+            <option value="20"></option>
+            <option value="30"></option>
+            <option value="40"></option>
+            <option value="50"></option>
+            <option value="60"></option>
+            <option value="70"></option>
+            <option value="80"></option>
+            <option value="90"></option>
+            <option value="100"></option>
+        </datalist>
+    </form>
+</body>
+</html>
