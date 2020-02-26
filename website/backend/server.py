@@ -15,8 +15,9 @@ from pd_socket import Pd
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'M,:Dhrd>U9Y/[fglzVr$f#={Y7PPvabElCt@CTi"I+9~Im+&F%h+O{g=oV#+%os'
 app.debug = True
-socketio = SocketIO(app)
 CORS(app)
+socketio = SocketIO(app)
+socketio.init_app(app, cors_allowed_origins='*')
 
 conn_users = {}
 joined_users = {}
@@ -31,12 +32,6 @@ def read_in_chunks(file_object, chunk_size=1024):
         if not data:
             break
         yield data
-
-@app.route('/')
-def show_control():
-    #   TODO
-    #   Later on implement audio button here, just to be able to do things.
-    return render_template('music.html')
 
 def get_audio(*args, **kwargs):
     #   Stream chunks audio here
@@ -58,11 +53,6 @@ def dated_url_for(endpoint, **values):
             file_path = os.path.join(app.root_path, endpoint, filename)
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
-
-
-@app.route('/users')
-def get_users():
-    return render_template('users.html', conn_users=conn_users)
 
 @socketio.on("connect")
 def on_connect():
