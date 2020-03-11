@@ -18,7 +18,7 @@ CORS(app)
 conn_users = {}
 joined_users = {}
 
-def read_in_chunks(file_object, chunk_size=1024):
+def read_in_chunks(file_object, chunk_size=1536):
     """Lazy function (generator) to read a file piece by piece.
     Default chunk size: 1k."""
     while True:
