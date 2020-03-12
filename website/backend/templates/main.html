@@ -15,7 +15,7 @@
                     e.preventDefault(); // prevents page reloading
                     socket.emit('set_control', {
                         "gain": $('#gain').val(),
-                        "echo": $('#echo').val(),
+                        "delay": $('#delay').val(),
                         "reverb": $('#reverb').val()
                     });
                     return false;
@@ -26,7 +26,7 @@
     <body>
         <form id="control" action=''>
             <input type="number" id="gain"><button>Set</button>
-            <input type="number" id="echo"><button>Set</button>
+            <input type="number" id="delay"><button>Set</button>
         </form>
     </body>
 </html>

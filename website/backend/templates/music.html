@@ -48,7 +48,7 @@
             $('#control').change(function(e) {
                 socket.emit('set_control', {
                     "gain": $('#gain').val(),
-                    "echo": $('#echo').val(),
+                    "delay": $('#delay').val(),
                     "reverb": $('#reverb').val()
                 });
                 return false;
@@ -66,9 +66,13 @@
 <body>
     <form id="control" action="">
         <button>Join Stream</button>
-        <input type="range" id="gain" min="0" max="100" list="tickmarks" id="slider" orient="vertical">Gain
-        <input type="range" id="echo" min="0" max="100" list="tickmarks" id="slider" orient="vertical">Echo
-        <input type="range" id="reverb" min="0" max="100" list="tickmarks" id="slider" orient="vertical">Reverb
+        <fieldset>
+            <label orient='270deg' type='range' for="band" before="9" after="0">5</label>
+            <input type="range" id="gain" min="0" max="100" list="tickmarks" id="slider" orient="270deg">
+            <input type="range" id="delay" min="0" max="100" list="tickmarks" id="slider" orient="270deg">
+            <input type="range" id="reverb" min="0" max="100" list="tickmarks" id="slider" orient="270deg">
+            <label orient='90deg' type='range' for="band" before="9" after="0">5</label>
+        </fieldset>
         <datalist id="tickmarks">
             <option value="0"></option>
             <option value="10"></option>
