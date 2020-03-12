@@ -9,6 +9,6 @@ BITS_PER_SAMPLE = 16
 
 default_control = {
     "gain": 10,
-    "echo": 0,
+    "delay": 0,
     "reverb": 0
 }
