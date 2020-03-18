@@ -1,50 +1,375 @@
+@import url(https://fonts.googleapis.com/css?family=Merienda+One);
+@import url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+html {
+    font-size: 1em;
+}
+
 body {
-    font: 14px "Century Gothic", Futura, sans-serif;
-    margin: 20px;
-}
-
-ol, ul {
-    padding-left: 30px;
-}
-
-.board-row:after {
-    clear: both;
-    content: "";
-    display: table;
-}
-
-.status {
-    margin-bottom: 10px;
-}
-
-.square {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 34px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
+    color: #bbb;
+    background-color: #444;
     text-align: center;
-    width: 34px;
+    overscroll-behavior-y: contain;
 }
 
-.square:focus {
-    outline: none;
+fieldset {
+    border: #999 solid 0.2em;
+    border-radius: 0.5em;
+    display: inline-block;
+    text-align: left;
+    position: relative;
+    transition: border-color 0.25s linear;
+    overflow: auto;
+    /* overflow-x: hidden; */
+    overscroll-behavior: contain;
 }
 
-.kbd-navigation .square:focus {
-    background: #ddd;
+/* Hide scrollbar for Chrome, Safari and Opera */
+
+fieldset::-webkit-scrollbar {
+    display: none;
 }
 
-.game {
-    display: flex;
-    flex-direction: row;
+/* Hide scrollbar for IE and Edge */
+
+fieldset {
+    -ms-overflow-style: none;
 }
 
-.game-info {
-    margin-left: 20px;
+fieldset:hover {
+    border: #bbb solid 0.2em;
+}
+
+legend {
+    font-size: 1.8em;
+    font-family: "Merienda One", cursive;
+    padding-left: 0.3em;
+    padding-right: 0.2em;
+    color: #ace;
+    text-shadow: -0.125em 0.05em 0 #214893, -0.25em 0.1em 0 #313131;
+}
+
+/*  Buttons */
+
+strong {
+    font-weight: bold;
+}
+
+.button {
+    background-color: #f2f2f2;
+    background-image: linear-gradient(to bottom, #f2f2f2, #f2f2f2);
+    border: 1px solid #bfbfbf;
+    box-shadow: inset 0 1px 0 white, inset 0 -1px 0 #d9d9d9, inset 0 0 0 1px #f2f2f2, 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #8c8c8c;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    padding: 9px 16px 9px;
+    margin: 16px 0 0 16px;
+    transition: all 20ms ease-out;
+    vertical-align: top;
+}
+
+.button:hover, .button:focus {
+    background: #f2f2f2;
+    border-color: #8c8c8c;
+    box-shadow: inset 0 1px 0 white, inset 0 -1px 0 #d9d9d9, inset 0 0 0 1px #f2f2f2;
+}
+
+.button:active {
+    background: #f2f2f2;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.button .fa {
+    color: #bfbfbf;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.button-blue {
+    background-color: #42b0e3;
+    background-image: linear-gradient(to bottom, #42b0e3, #2ba9e3);
+    border: 1px solid #107db0;
+    box-shadow: inset 0 1px 0 #7cd4fc, inset 0 -1px 0 #2696c9, inset 0 0 0 1px #59b7e3, 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.button-blue:hover, .button-blue:focus {
+    background: #2ba9e3;
+    border-color: #004c6f;
+    box-shadow: inset 0 1px 0 #7cd4fc, inset 0 -1px 0 #2696c9, inset 0 0 0 1px #59b7e3;
+}
+
+.button-blue:active {
+    background: #2ba9e3;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.button-blue .fa {
+    color: #107db0;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.button-green {
+    background-color: #97cc76;
+    background-image: linear-gradient(to bottom, #97cc76, #8bcc62);
+    border: 1px solid #5f993a;
+    box-shadow: inset 0 1px 0 #c6e6b3, inset 0 -1px 0 #79b356, inset 0 0 0 1px #a4cc8b, 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.button-green:hover, .button-green:focus {
+    background: #8bcc62;
+    border-color: #326612;
+    box-shadow: inset 0 1px 0 #c6e6b3, inset 0 -1px 0 #79b356, inset 0 0 0 1px #a4cc8b;
+}
+
+.button-green:active {
+    background: #8bcc62;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.button-green .fa {
+    color: #5f993a;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.button-purple {
+    background-color: #847bba;
+    background-image: linear-gradient(to bottom, #847bba, #7568ba);
+    border: 1px solid #493e87;
+    box-shadow: inset 0 1px 0 #bab6d4, inset 0 -1px 0 #655aa1, inset 0 0 0 1px #948dba, 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.button-purple:hover, .button-purple:focus {
+    background: #7568ba;
+    border-color: #1f1654;
+    box-shadow: inset 0 1px 0 #bab6d4, inset 0 -1px 0 #655aa1, inset 0 0 0 1px #948dba;
+}
+
+.button-purple:active {
+    background: #7568ba;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.button-purple .fa {
+    color: #493e87;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.button-orange {
+    background-color: #f58a38;
+    background-image: linear-gradient(to bottom, #f58a38, #f57c20);
+    border: 1px solid #c25706;
+    box-shadow: inset 0 1px 0 #ffb984, inset 0 -1px 0 #db6f1d, inset 0 0 0 1px #f59851, 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.button-orange:hover, .button-orange:focus {
+    background: #f57c20;
+    border-color: #773300;
+    box-shadow: inset 0 1px 0 #ffb984, inset 0 -1px 0 #db6f1d, inset 0 0 0 1px #f59851;
+}
+
+.button-orange:active {
+    background: #f57c20;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.button-orange .fa {
+    color: #c25706;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.button-red {
+    background-color: #ed6d64;
+    background-image: linear-gradient(to bottom, #ed6d64, #ed574c);
+    border: 1px solid #ba3329;
+    box-shadow: inset 0 1px 0 #ffb0aa, inset 0 -1px 0 #d44d44, inset 0 0 0 1px #ed837b, 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.button-red:hover, .button-red:focus {
+    background: #ed574c;
+    border-color: #870c03;
+    box-shadow: inset 0 1px 0 #ffb0aa, inset 0 -1px 0 #d44d44, inset 0 0 0 1px #ed837b;
+}
+
+.button-red:active {
+    background: #ed574c;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.button-red .fa {
+    color: #ba3329;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.button-yellow {
+    background-color: #fce374;
+    background-image: linear-gradient(to bottom, #fce374, #fcdf5b);
+    border: 1px solid #c9ae34;
+    box-shadow: inset 0 1px 0 #fff6ce, inset 0 -1px 0 #e3c852, inset 0 0 0 1px #fce88d, 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #967d09;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.button-yellow:hover, .button-yellow:focus {
+    background: #fcdf5b;
+    border-color: #967d09;
+    box-shadow: inset 0 1px 0 #fff6ce, inset 0 -1px 0 #e3c852, inset 0 0 0 1px #fce88d;
+}
+
+.button-yellow:active {
+    background: #fcdf5b;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.button-yellow .fa {
+    color: #c9ae34;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.button .fa {
+    float: left;
+    font-size: 14px;
+    line-height: 20px;
+    margin: -1px 8px 0 -4px;
+    vertical-align: top;
+}
+
+/* Labels  */
+
+/* ## Label main element */
+
+label[type='range'] {
+    display: block;
+    position: relative;
+    margin-right: 0.1em;
+    margin-left: 0.1em;
+    padding: 0;
+    font-size: inherit;
+    line-height: 0.6em;
+    width: 9.9em;
+    height: 1em;
+    border-radius: 0.25em;
+    color: #242424;
+    font-family: arial;
+    border: 0.2em solid transparent;
+    text-align: center;
+    border-bottom-color: #242424;
+    background-image: linear-gradient(#242424 calc(50% - .1em), #242424 calc(50% + .1em));
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: 0.2em 0.2em;
+    color: #999;
+}
+
+label[type='range']:first-letter {
+    font-size: 0.6em;
+}
+
+label[type='range']::before, label[type='range']::after {
+    display: block;
+    position: absolute;
+    height: 1em;
+    line-height: 1em;
+    width: 1em;
+}
+
+label[type='range']::before {
+    content: attr(before);
+    left: -0.2em;
+    text-align: left;
+}
+
+label[type='range']::after {
+    content: attr(after);
+    top: 0;
+    right: -0.2em;
+    text-align: right;
+}
+
+label[type='range'][orient='90deg'], label[type='range'][orient='270deg'] {
+    border-bottom-color: transparent;
+    display: inline-block;
+    width: 1em;
+    height: 10.1em;
+    line-height: 10.1em;
+    vertical-align: top;
+}
+
+label[type='range'][orient='90deg'] {
+    border-bottom-color: transparent;
+    border-left-color: #242424;
+    background-position: center left;
+    text-align: center;
+}
+
+label[type='range'][orient='90deg']::before {
+    top: -0.2em;
+    bottom: auto;
+    left: 0.1em;
+}
+
+label[type='range'][orient='90deg']::after {
+    left: 0.1em;
+    top: auto;
+    bottom: -0.2em;
+    right: 0;
+    text-align: left;
+}
+
+label[type='range'][orient='180deg'] {
+    border-bottom-color: transparent;
+    border-top-color: #242424;
+    background-position: top center;
+    line-height: 1.4em;
+}
+
+label[type='range'][orient='180deg']::before {
+    bottom: 0;
+    left: auto;
+    right: -0.2em;
+    text-align: right;
+}
+
+label[type='range'][orient='180deg']::after {
+    bottom: 0;
+    left: -0.2em;
+    right: auto;
+    text-align: left;
+}
+
+label[type='range'][orient='270deg'] {
+    border-bottom-color: transparent;
+    border-right-color: #242424;
+    background-position: center right;
+    text-align: center;
+}
+
+label[type='range'][orient='270deg']::before {
+    bottom: -0.2em;
+    top: auto;
+    right: 0.1em;
+    left: auto;
+    text-align: right;
+}
+
+label[type='range'][orient='270deg']::after {
+    right: 0.1em;
+    bottom: auto;
+    top: -0.2em;
+    left: auto;
+    text-align: right;
 }

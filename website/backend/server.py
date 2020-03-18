@@ -21,10 +21,14 @@ socketio.init_app(app, cors_allowed_origins='*')
 
 conn_users = {}
 joined_users = {}
-conn_port = set()
+conn_port = set([3000, 5000])
 pd_users_process = {}
 
-def read_in_chunks(file_object, chunk_size=1536):
+@app.route('/')
+def index():
+    return render_template('music.html')
+
+def read_in_chunks(file_object, chunk_size=1024):
     """Lazy function (generator) to read a file piece by piece.
     Default chunk size: 1k."""
     while True:
@@ -102,7 +106,7 @@ def set_control(control_data: dict):
         print(f'emitting event update_control {cur_user.as_json()}')
         socketio.emit('update_control', {'user': cur_user.as_json()})
         pd_socket = Pd('localhost', cur_user.port)
-        pd_socket.send(f'{control_data["gain"]} {control_data["echo"]} {control_data["reverb"]}')
+        pd_socket.send(f'{control_data["gain"]} {control_data["delay"]} {control_data["reverb"]}')
         for control, value in control_data.items():
             print(user_id, control, value)
 
@@ -127,7 +131,7 @@ def on_join():
             pd_users_process[user_id] = p
         #   Send default pd input
         pd_socket = Pd('localhost', user.port)
-        pd_socket.send_async(f'{user.audio_conf["gain"]} {user.audio_conf["echo"]} {user.audio_conf["reverb"]}', repeat_until_connect=True)
+        pd_socket.send_async(f'{user.audio_conf["gain"]} {user.audio_conf["delay"]} {user.audio_conf["reverb"]}', repeat_until_connect=True)
 
 
 
