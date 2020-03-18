@@ -21,7 +21,7 @@ socketio.init_app(app, cors_allowed_origins='*')
 
 conn_users = {}
 joined_users = {}
-conn_port = set([3000, 5000])
+conn_port = set([config.CLIENT_ENDPOINT_PORT, config.API_ENDPOINT_PORT])
 pd_users_process = {}
 
 @app.route('/')
@@ -140,4 +140,4 @@ def on_join():
 if __name__ == "__main__":
     ip = util.get_ip_address()
     print(f'To access externally, open this address from your device {ip}')
-    socketio.run(app, host="0.0.0.0", port=5000)
+    socketio.run(app, host="0.0.0.0", port=config.API_ENDPOINT_PORT)
