@@ -6,7 +6,6 @@ from flask import Flask, render_template, Response, jsonify, request, Response, 
 from flask_socketio import SocketIO
 from flask_cors import CORS
 import os
-import async_stream
 import time
 import subprocess
 from pd_reader import Pd_Patch
@@ -21,7 +20,7 @@ socketio.init_app(app, cors_allowed_origins='*')
 
 conn_users = {}
 joined_users = {}
-conn_port = set([config.CLIENT_ENDPOINT_PORT, config.API_ENDPOINT_PORT])
+conn_port = set([config.CLIENT_ENDPOINT_PORT, config.API_ENDPOINT_PORT, config.STREAM_ENDPOINT_PORT])
 pd_users_process = {}
 
 @app.route('/')
@@ -36,14 +35,6 @@ def read_in_chunks(file_object, chunk_size=1024):
         if not data:
             break
         yield data
-
-def get_audio(*args, **kwargs):
-    #   Stream chunks audio here
-    # with open('./music/bios.mp3', 'rb') as f:
-    #     for chunks in read_in_chunks(f):
-    #         yield(chunks)
-    for audio in async_stream.get_audio():
-        yield(audio)
 
 #   To prevent caching static files
 @app.context_processor
@@ -106,6 +97,7 @@ def set_control(control_data: dict):
         print(f'emitting event update_control {cur_user.as_json()}')
         socketio.emit('update_control', {'user': cur_user.as_json()})
         pd_socket = Pd('localhost', cur_user.port)
+        # TODO SEND CORRECT ARGS
         pd_socket.send(f'{control_data["gain"]} {control_data["delay"]} {control_data["reverb"]}')
         for control, value in control_data.items():
             print(user_id, control, value)
@@ -123,6 +115,8 @@ def on_join():
         print(f'{user.id} joined the stream')
         #   Set new pd patch file
         pd_patch = Pd_Patch(base_pd_path)
+        #   TODO    Set mountpoint etc
+        pd_patch.set_mountpoint(user.port)
         pd_patch.set_port_netreceive(f'{user.port}', user_pd_path)
         #   Open new pd subprocess with new pd patch
         if user_id not in pd_users_process:
@@ -132,6 +126,7 @@ def on_join():
         #   Send default pd input
         pd_socket = Pd('localhost', user.port)
         pd_socket.send_async(f'{user.audio_conf["gain"]} {user.audio_conf["delay"]} {user.audio_conf["reverb"]}', repeat_until_connect=True)
+        socketio.emit('stream', {'source': f'{util.get_ip_address()}:{config.STREAM_ENDPOINT_PORT}/{user.port}.mp3'})
 
 
 
@@ -140,4 +135,12 @@ def on_join():
 if __name__ == "__main__":
     ip = util.get_ip_address()
     print(f'To access externally, open this address from your device {ip}')
+    #   Write/Update json config
+    import json
+    with open('../frontend/src/config.json', mode='w') as file:
+        json.dump({    
+            "endpoint_port": str(config.API_ENDPOINT_PORT),
+            "endpoint_ip": ip
+        }, file)
+
     socketio.run(app, host="0.0.0.0", port=config.API_ENDPOINT_PORT)
