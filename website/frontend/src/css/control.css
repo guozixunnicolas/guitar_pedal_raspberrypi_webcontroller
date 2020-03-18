@@ -1,6 +1,8 @@
+
+/* "input": CSS for Modifiers (Echo, Damp, Dry and Wet) */
 input[type=range].equalizer {
     -webkit-appearance: none;
-    width: 100%;
+    width: 50%;
     margin: 4.05px 0;
 }
 
@@ -95,3 +97,50 @@ input[type=range].equalizer:focus::-ms-fill-lower {
 input[type=range].equalizer:focus::-ms-fill-upper {
     background: #f3f3f3;
 }
+
+
+/* "slider": CSS for Main Volume */
+slide[type=range].slidecontainer {
+    width: 40%;
+    margin: 4.05px 0;
+}
+
+slide[type=range].slidecontainer {
+    width: 100%; /* Width of the outside container */
+  }
+  
+  /* The slider itself */
+  slide[type=range].slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+  }
+  
+  /* Mouse-over effects */
+  slide[type=range].slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+  }
+  
+  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+  slide[type=range].slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #4CAF50; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+  slide[type=range].slider::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #4CAF50; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+

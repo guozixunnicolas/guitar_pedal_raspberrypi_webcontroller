@@ -12,24 +12,18 @@ class App extends React.Component {
         this.state = {
             controls: {
                 equalizer: {
-                    value: Array(8).fill(0),
-                    min: Array(8).fill(0),
-                    max: Array(8).fill(1),
-                    step: Array(8).fill(0.01)
+                    value: Array(4).fill(0),
+                    min: Array(4).fill(0),
+                    max: Array(4).fill(1),
+                    step: Array(4).fill(0.01)
                 },
-                gain: {
+                echo: {
                     value: 0,
                     min: 0,
                     max: 100,
                     step: 1
                 },
-                reverb: {
-                    value: 0,
-                    min: 0,
-                    max: 100,
-                    step: 1
-                },
-                delay: {
+                damp: {
                     value: 0,
                     min: 0,
                     max: 100,

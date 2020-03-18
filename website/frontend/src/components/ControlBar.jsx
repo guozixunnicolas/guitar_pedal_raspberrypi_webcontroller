@@ -21,10 +21,12 @@ class ControlBar extends React.Component {
     generateSlider() {
         return (
             <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                <div>
                 <span style={{ fontSize: "16px", marginBottom: "6px" }}>
                     {" "}
                     {this.state.label} ({this.state.value})
                 </span>
+                </div>
                 <input
                     id={this.state.label}
                     type="range"
