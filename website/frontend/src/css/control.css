@@ -100,17 +100,17 @@ input[type=range].equalizer:focus::-ms-fill-upper {
 
 
 /* "slider": CSS for Main Volume */
-slide[type=range].slidecontainer {
+input[type=range].slidecontainer {
     width: 40%;
     margin: 4.05px 0;
 }
 
-slide[type=range].slidecontainer {
+input[type=range].slider {
     width: 100%; /* Width of the outside container */
   }
   
   /* The slider itself */
-  slide[type=range].slider {
+  input[type=range].slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
     width: 100%; /* Full-width */
@@ -123,12 +123,12 @@ slide[type=range].slidecontainer {
   }
   
   /* Mouse-over effects */
-  slide[type=range].slider:hover {
+  input[type=range].slider:hover {
     opacity: 1; /* Fully shown on mouse-over */
   }
   
   /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-  slide[type=range].slider::-webkit-slider-thumb {
+  input[type=range].slider::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
     width: 25px; /* Set a specific slider handle width */
@@ -137,7 +137,7 @@ slide[type=range].slidecontainer {
     cursor: pointer; /* Cursor on hover */
   }
   
-  slide[type=range].slider::-moz-range-thumb {
+  input[type=range].slider::-moz-range-thumb {
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
     background: #4CAF50; /* Green background */
