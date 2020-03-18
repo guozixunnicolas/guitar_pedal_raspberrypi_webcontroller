@@ -70,6 +70,7 @@ class App extends React.Component {
                 controls.push(<Control min={cur_controls[key].min} max={cur_controls[key].max} value={cur_controls[key].value} label={key.toUpperCase()} className='equalizer'></Control>)
             }
         }
+        controls.push(<Control min="0" max="100" label="Volume" className="slider" />)
         return controls;
     }
     render() {
