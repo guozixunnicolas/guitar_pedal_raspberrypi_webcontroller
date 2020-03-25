@@ -276,7 +276,7 @@ label[type='range'] {
 }
 
 label[type='range']:first-letter {
-    font-size: 0.6em;
+    font-size: 0.8em;
 }
 
 label[type='range']::before, label[type='range']::after {
@@ -303,7 +303,7 @@ label[type='range']::after {
 label[type='range'][orient='90deg'], label[type='range'][orient='270deg'] {
     border-bottom-color: transparent;
     display: inline-block;
-    width: 1em;
+    width: 1.2em;
     height: 10.1em;
     line-height: 10.1em;
     vertical-align: top;
