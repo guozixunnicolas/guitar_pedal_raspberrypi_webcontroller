@@ -19,13 +19,19 @@ class App extends React.Component {
                     max: 10,
                     step: 1
                 },
-                echo: {
+                gain: {
                     value: 0,
                     min: 0,
                     max: 100,
                     step: 1
                 },
-                damp: {
+                reverb: {
+                    value: 0,
+                    min: 0,
+                    max: 100,
+                    step: 1
+                },
+                delay: {
                     value: 0,
                     min: 0,
                     max: 100,
@@ -109,7 +115,7 @@ class App extends React.Component {
                 controls.push(<Control onMouseUpCapture={(e) => this.submitControl(e)} onChange={(e) => this.handleControlChange(e)} key={key.toLowerCase()} min={cur_controls[key].min} max={cur_controls[key].max} value={cur_controls[key].value} label={key.toLowerCase()} step={cur_controls[key].step} className="control" />)
             }
         }
-        controls.push(<Control min="0" max="100" label="Volume" className="slider" />)
+        // controls.push(<Control min="0" max="100" label="Volume" className="slider" />)
         return controls;
     }
     render() {
