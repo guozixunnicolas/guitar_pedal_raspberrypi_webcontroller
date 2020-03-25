@@ -2,15 +2,15 @@ import os
 
 class Pd_Patch(object):
     def __init__(self, path: str):
-        assert(os.path.isfile(path), "Path to patch doesn't exist")
+        assert os.path.isfile(path), "Path to patch doesn't exist"
         self.path = path
     
-    def set_port_netreceive(self, value: str, new_path: str = None):
+    def __set_custom_field(self, field: str, value: str, new_path: str = None):
         lines = []
         write_path = new_path or self.path
         with open(self.path, 'r') as file:
             for line in file:
-                if 'netreceive' in line:
+                if field in line:
                     args = line.split(' ')
                     args[-1] = str(value) + ';\n'
                     line = ' '.join(args)
@@ -20,5 +20,19 @@ class Pd_Patch(object):
             file.writelines(lines)
 
         return write_path
+
+
+    def set_port_netreceive(self, value: str, new_path: str = None):
+        write_path = self.__set_custom_field('netreceive', value, new_path)
+        return write_path
+
+    def set_mountpoint(self, value: str, new_path: str = None):
+        write_path = self.__set_custom_field('mountpoint', value, new_path)
+        return write_path
+
+    def set_port_stream(self, value: str, new_path: str = None):
+        write_path = self.__set_custom_field('localhost', value, new_path)
+        return write_path
+
 
 

@@ -50,6 +50,8 @@ class App extends React.Component {
                     step: 1
                 }
             },
+            isStreaming: false,
+            streamSource: null,
         }
     }
     setSocketListeners() {
@@ -62,6 +64,12 @@ class App extends React.Component {
             }
             this.setState({
                 controls: controls
+            })
+        });
+        this.socket.on('stream', (data) => {
+            this.setState({
+                isStreaming: true,
+                streamSource: data.source,
             })
         });
     }
@@ -83,9 +91,10 @@ class App extends React.Component {
             controls: controls
         });
     }
-    handleUserJoin(isUserActive) {
+    handleUserJoin(isUserFirstJoin) {
         //  TODO: Handle Userjoin (Emit particular event to backend)
-        if (isUserActive) {
+        console.log('Joining');
+        if (isUserFirstJoin) {
             this.socket.emit('user_join');
         }
     }
@@ -125,7 +134,8 @@ class App extends React.Component {
                 <fieldset>
                     <legend>Equalizer</legend>
                     {this.generateControls()}
-                    <EqualizerButton onClick={(isUserActive) => this.handleUserJoin(isUserActive)} />
+                    <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
+                    {this.state.isStreaming && <audio autoPlay="true" src={this.state.streamSource} />}
                 </fieldset>
                 {/* <button class="button button-blue">
                     <i class="fa fa-cloud-download"></i>
