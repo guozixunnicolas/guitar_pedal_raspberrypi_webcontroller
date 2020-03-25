@@ -52,6 +52,7 @@ class App extends React.Component {
             },
             isStreaming: false,
             streamSource: null,
+            fieldsetRef: React.createRef(),
         }
     }
     setSocketListeners() {
@@ -75,6 +76,10 @@ class App extends React.Component {
     }
     componentDidMount() {
         this.setSocketListeners();
+        let fixed = this.state.fieldsetRef.current;
+        fixed.addEventListener('touchmove', (e) => {
+
+        }, false);
     }
     handleControlChange(event) {
         let controls = this.state.controls;
@@ -130,7 +135,7 @@ class App extends React.Component {
         //  TODO: Where to get the audio stream from backend?
         return (
             <div id='app'>
-                <fieldset>
+                <fieldset ref={this.state.fieldsetRef}>
                     <legend>Equalizer</legend>
                     {this.generateControls()}
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />

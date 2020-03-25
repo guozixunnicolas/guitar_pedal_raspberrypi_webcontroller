@@ -19,8 +19,9 @@ fieldset {
     position: relative;
     transition: border-color 0.25s linear;
     overflow: auto;
-    /* overflow-x: hidden; */
+    overflow-x: hidden;
     overscroll-behavior: contain;
+    text-align: center;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
