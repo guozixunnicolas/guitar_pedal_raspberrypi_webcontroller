@@ -59,7 +59,6 @@ class ControlBar extends React.Component {
                     {" "}
                     {ExtendedString.toProperCase(this.state.label)} ({this.state.value})
                 </span>
-                </div>
                 <input
                     id={this.state.label}
                     type="range"
