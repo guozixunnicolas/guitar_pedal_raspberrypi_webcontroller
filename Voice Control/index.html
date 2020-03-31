@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <label for="Speech Recognition">Speech Recognition</label>
+    <input type="text" name="" id="speechToText" placeholder="Speak Something" onclick="record()">
+    <!-- <input type="submit" value="Do " onclick="follow()" />    -->
+    <!-- <div>
+        <p>
+            <label>Volume</label>
+            <input type="range" id="fromPrice" value="50" min="0" max="500" 
+                oninput="document.getElementById('fPrice').innerHTML = this.value" />
+            <label id="fPrice"></label>
+            <div id='confidence'>0</div>
+        </p>
+    </div> -->
+    
+    <!-- Below is the script for voice recognition and conversion to text-->
+    <script src='speech.js'>
+        
+    </script>
+    <script>
+
+        // function follow(){
+        //     var valfollow = document.getElementById('fPrice').innerHTML;
+        //     document.getElementById('speechToText').value = valfollow;
+        // }
+    </script>
+</body>
+</html>
