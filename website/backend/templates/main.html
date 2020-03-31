@@ -14,9 +14,9 @@
                 $('#control').submit(function(e){
                     e.preventDefault(); // prevents page reloading
                     socket.emit('set_control', {
-                        "gain": $('#gain').val(),
+                        "reverb": $('#reverb').val(),
                         "delay": $('#delay').val(),
-                        "reverb": $('#reverb').val()
+                        "damp": $('#damp').val()
                     });
                     return false;
                 });
@@ -25,7 +25,7 @@
     </head>
     <body>
         <form id="control" action=''>
-            <input type="number" id="gain"><button>Set</button>
+            <input type="number" id="reverb"><button>Set</button>
             <input type="number" id="delay"><button>Set</button>
         </form>
     </body>

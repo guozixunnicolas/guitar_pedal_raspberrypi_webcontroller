@@ -47,9 +47,9 @@
             }
             $('#control').change(function(e) {
                 socket.emit('set_control', {
-                    "gain": $('#gain').val(),
+                    "reverb": $('#reverb').val(),
                     "delay": $('#delay').val(),
-                    "reverb": $('#reverb').val()
+                    "damp": $('#damp').val()
                 });
                 return false;
             });
@@ -68,9 +68,9 @@
         <button>Join Stream</button>
         <fieldset>
             <label orient='270deg' type='range' for="band" before="9" after="0">5</label>
-            <input type="range" id="gain" min="0" max="100" list="tickmarks" id="slider" orient="270deg">
-            <input type="range" id="delay" min="0" max="100" list="tickmarks" id="slider" orient="270deg">
             <input type="range" id="reverb" min="0" max="100" list="tickmarks" id="slider" orient="270deg">
+            <input type="range" id="delay" min="0" max="100" list="tickmarks" id="slider" orient="270deg">
+            <input type="range" id="damp" min="0" max="100" list="tickmarks" id="slider" orient="270deg">
             <label orient='90deg' type='range' for="band" before="9" after="0">5</label>
         </fieldset>
         <datalist id="tickmarks">
