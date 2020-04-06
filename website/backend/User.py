@@ -14,7 +14,7 @@ class User(object):
     
     def audio_conf_as_pd_payload(self):
         assert 'equalizer' in self.audio_conf, 'Default config not found'
-        return ", ".join([str(int_value) for int_value in [*self.audio_conf["equalizer"], *[_ for _ in self.audio_conf.values() if not isinstance(_, list)]]])
+        return ", ".join([str(int_value) for int_value in [*[eq_val / config.EQUALIZER_NORMALIZED_CONST for eq_val in self.audio_conf["equalizer"]], *[val / config.CONTROLS_NORMALIZED_CONST if 'fixed' not in key else val for key, val in self.audio_conf.items() if not isinstance(val, list)]]])
 
 if __name__ == "__main__":
     user = User('123')
