@@ -14,12 +14,17 @@ CLIENT_ENDPOINT_PORT = 3000
 STREAM_ENDPOINT_PORT = 8000
 
 #   Pd Audio Control
+#   equalizer -> normalized between [0, 1] from [0, 10]
+#   Others -> normalized between [0, 1] from [0, 100]
+
+EQUALIZER_NORMALIZED_CONST = 10
+CONTROLS_NORMALIZED_CONST = 100
 
 default_control = {
     "equalizer": [int(_) for _ in "0" * 8],
-    "fixed_preamp": 1,
+    "volume": 0,
     "fixed_bypass": 1,
-    "reverb": 10,
+    "reverb": 0,
     "roomsize": 0,
     "damp": 0,
     "dry": 0,
