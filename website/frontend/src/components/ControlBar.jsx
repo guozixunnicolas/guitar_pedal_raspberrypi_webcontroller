@@ -69,7 +69,7 @@ class ControlBar extends React.Component {
                     onMouseUpCapture={(e) => this.props.onMouseUpCapture(e)}
                     onTouchEndCapture={(e) => this.props.onMouseUpCapture(e)}
                     value={this.state.value}
-                    step={this.state.step}
+                    step={this.props.step}
                     orient={this.props.orient}
                 />
             </div>
