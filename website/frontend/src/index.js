@@ -19,6 +19,12 @@ class App extends React.Component {
                     max: 10,
                     step: 1
                 },
+                volume: {
+                    value: 0,
+                    min: 0,
+                    max: 100,
+                    step: 1
+                },
                 reverb: {
                     value: 0,
                     min: 0,
