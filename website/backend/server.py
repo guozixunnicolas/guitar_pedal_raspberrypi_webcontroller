@@ -57,6 +57,7 @@ def on_disconnect():
         socketio.emit('user_disconnected', {'user': disconnected_user.as_json()})
         joined_users.pop(request.sid)
     except KeyError:
+        print(f'{request.sid} is not in connected users lists')
         pass
 
 @socketio.on('set_control')
@@ -70,6 +71,8 @@ def set_control(control_data: dict):
         pd_socket = Pd('localhost', user.port)
         # pd_socket.send(f'{control_data["reverb"]} {control_data["delay"]} {control_data["damp"]}')
         pd_socket.send(user.audio_conf_as_pd_payload())
+        print('Sending payload as')
+        print(user.audio_conf_as_pd_payload())
         print(f'{user_id} updated his control')
         for control, value in control_data.items():
             print(control, value)
