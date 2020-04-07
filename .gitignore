@@ -17,6 +17,7 @@ node_modules
 # testing
 /coverage
 test.py
+icecast/
 
 # production
 /build
