@@ -92,7 +92,7 @@ def on_join():
         #   Set new pd patch file
         pd_patch = Pd_Patch(base_pd_path)
         #   TODO    Set mountpoint etc
-        pd_patch.set_mountpoint(user.port)
+        pd_patch.set_mountpoint(f'stream{user.port}')
         pd_patch.set_port_netreceive(f'{user.port}', user_pd_path)
         #   Open new pd subprocess with new pd patch
         if user_id not in pd_users_process:
@@ -103,7 +103,7 @@ def on_join():
         pd_socket = Pd('localhost', user.port)
         # pd_socket.send_async(f'{user.audio_conf["reverb"]} {user.audio_conf["delay"]} {user.audio_conf["damp"]}', repeat_until_connect=True)
         pd_socket.send_async(user.audio_conf_as_pd_payload(), repeat_until_connect=True)
-        socketio.emit('stream', {'source': f'http://{util.get_ip_address()}:{config.STREAM_ENDPOINT_PORT}/{user.port}.mp3'})
+        socketio.emit('stream', {'source': f'http://{util.get_ip_address()}:{config.STREAM_ENDPOINT_PORT}/stream{user.port}.mp3'})
 
 
 
