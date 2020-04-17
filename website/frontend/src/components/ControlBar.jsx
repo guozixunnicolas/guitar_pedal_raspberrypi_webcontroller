@@ -47,7 +47,7 @@ class ControlBar extends React.Component {
                 onMouseUpCapture={(e) => this.props.onMouseUpCapture(e)}
                 onTouchEndCapture={(e) => this.props.onMouseUpCapture(e)}
                 value={this.state.value}
-                step="1"
+                step={this.props.step}
                 orient={this.props.orient}
             />
         )
@@ -59,38 +59,14 @@ class ControlBar extends React.Component {
                     {" "}
                     {ExtendedString.toProperCase(this.state.label)} ({this.state.value})
                 </span>
-                <input
-                    id={this.state.label}
-                    type="range"
-                    min={this.props.min}
-                    max={this.props.max}
-                    className={this.props.className}
-                    onChange={this.handleSliderChange.bind(this)}
-                    onMouseUpCapture={(e) => this.props.onMouseUpCapture(e)}
-                    onTouchEndCapture={(e) => this.props.onMouseUpCapture(e)}
-                    value={this.state.value}
-                    step={this.props.step}
-                    orient={this.props.orient}
-                />
+                {this.generateInput()}
             </div>
         )
     }
     render() {
         if(this.state.noLabelLegend) {
             return(
-                <input
-                    id={this.state.label}
-                    type="range"
-                    min={this.props.min}
-                    max={this.props.max}
-                    className={this.props.className}
-                    onChange={this.handleSliderChange.bind(this)}
-                    onMouseUpCapture={(e) => this.props.onMouseUpCapture(e)}
-                    onTouchEndCapture={(e) => this.props.onMouseUpCapture(e)}
-                    value={this.state.value}
-                    step={this.state.step}
-                    orient={this.props.orient}
-                />
+                this.generateInput()
             );
         }
         else {
