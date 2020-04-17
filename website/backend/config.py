@@ -16,25 +16,26 @@ STREAM_ENDPOINT_PORT = 8000
 #   Pd Audio Control
 #   equalizer -> normalized between [0, 1] from [0, 10]
 #   Others -> normalized between [0, 1] from [0, 100]
+#   fixed_<field> -> does not get normalized. Will be send in raw data.
 
 EQUALIZER_NORMALIZED_CONST = 10
 CONTROLS_NORMALIZED_CONST = 100
 
 default_control = {
-    "equalizer": [int(_) for _ in "0" * 8],
-    "volume": 0,
-    "fixed_bypass": 1,
-    "reverb": 0,
-    "roomsize": 0,
-    "damp": 0,
-    "dry": 0,
+    "equalizer": [1, 2, 3, 4, 5, 4, 3, 2],
+    "volume": 70,
+    "fixed_bypass": 0,
+    "reverb": 10,
+    "roomsize": 50,
+    "damp": 90,
+    "dry": 10,
     "wet": 0,
     "delay": 0,
-    "fixed_val": 0,
+    "fixed_val": 0.1,
     "fixed_record": 0,
     "fixed_tempo": 0,
     "fixed_clear": 0,
-    "fixed_audio": 0,
+    "fixed_audio": 1,
     "fixed_reverse": 0
 }
 
