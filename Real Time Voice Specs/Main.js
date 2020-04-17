@@ -17,26 +17,26 @@ if (navigator.mediaDevices.getUserMedia) {
   const constraints = { audio: true };
   let chunks = [];
 
-  let onSuccess = function(stream) {
+  let onSuccess = function (stream) {
     const mediaRecorder = new MediaRecorder(stream);
 
     visualize(stream);
   }
 
-  let onError = function(err) {
+  let onError = function (err) {
     console.log('The following error occured: ' + err);
   }
 
   navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
 
-} 
+}
 
 else {
-   console.log('getUserMedia not supported on your browser!');
+  console.log('getUserMedia not supported on your browser!');
 }
 
 function visualize(stream) {
-  if(!audioCtx) {
+  if (!audioCtx) {
     audioCtx = new AudioContext();
   }
 
@@ -62,24 +62,24 @@ function visualize(stream) {
 
     canvas.width = window.innerWidth * 0.98;
     canvas.height = window.innerHeight * 0.30;
-    
+
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
 
     canvas2.width = window.innerWidth * 0.98;
     canvas2.height = window.innerHeight * 0.30;
-    
+
     WIDTH2 = canvas2.width;
     HEIGHT2 = canvas2.height;
 
     requestAnimationFrame(draw);
 
-	  analyser2.getByteTimeDomainData(dataArray2);
-	  analyser.getByteFrequencyData(dataArray);
+    analyser2.getByteTimeDomainData(dataArray2);
+    analyser.getByteFrequencyData(dataArray);
 
-	  canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+    canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
     canvasCtx.fillStyle = 'brown';
-    
+
     canvasCtx2.fillStyle = 'rgb(200, 200, 200)';
     canvasCtx2.fillRect(0, 0, WIDTH2, HEIGHT2);
     canvasCtx2.lineWidth = 2;
@@ -90,20 +90,20 @@ function visualize(stream) {
     let sliceWidth = WIDTH2 * 1.0 / bufferLength2;
     let x = 0;
 
-	  var bar = 16384;
-    for(let i = 0; i < bufferLength2; i++) {
+    var bar = 16384;
+    for (let i = 0; i < bufferLength2; i++) {
 
-		var bar_x = i * 4;
-		var bar_width = 3;
-		var bar_height = -(dataArray[i] / 1);
-		//  fillRect( x, y, width, height ) // Explanation of the parameters below
-		canvasCtx.fillRect(bar_x, HEIGHT, bar_width, bar_height);
-		
+      var bar_x = i * 4;
+      var bar_width = 3;
+      var bar_height = -(dataArray[i] / 1);
+      //  fillRect( x, y, width, height ) // Explanation of the parameters below
+      canvasCtx.fillRect(bar_x, HEIGHT, bar_width, bar_height);
+
 
       let v = dataArray2[i] / 128.0;
-      let y = v * HEIGHT2/2;
+      let y = v * HEIGHT2 / 2;
 
-      if(i === 0) {
+      if (i === 0) {
         canvasCtx2.moveTo(x, y);
       } else {
         canvasCtx2.lineTo(x, y);
@@ -112,13 +112,13 @@ function visualize(stream) {
       x += sliceWidth;
     }
 
-    canvasCtx2.lineTo(canvas2.width, canvas2.height/2);
+    canvasCtx2.lineTo(canvas2.width, canvas2.height / 2);
     canvasCtx2.stroke();
 
   }
 }
 
-window.onresize = function() {
+window.onresize = function () {
   canvas.width = mainSection.offsetWidth;
 }
 
