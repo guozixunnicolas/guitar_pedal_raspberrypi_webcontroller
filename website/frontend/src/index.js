@@ -151,7 +151,7 @@ class App extends React.Component {
                     <legend>Equalizer</legend>
                     {this.generateControls()}
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
-                    {this.state.isStreaming && <audio autoPlay="true" src={this.state.streamSource} />}
+                    {this.state.isStreaming && <audio autoPlay src={this.state.streamSource} />}
                 </fieldset>
                 {/* <button class="button button-blue">
                     <i class="fa fa-cloud-download"></i>
