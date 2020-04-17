@@ -20,34 +20,9 @@ socketio.init_app(app, cors_allowed_origins='*')
 
 conn_users = {}
 joined_users = {}
+#   Current connected port (In usage)
 conn_port = set([config.CLIENT_ENDPOINT_PORT, config.API_ENDPOINT_PORT, config.STREAM_ENDPOINT_PORT])
 pd_users_process = {}
-
-@app.route('/')
-def index():
-    return render_template('music.html')
-
-def read_in_chunks(file_object, chunk_size=1024):
-    """Lazy function (generator) to read a file piece by piece.
-    Default chunk size: 1k."""
-    while True:
-        data = file_object.read(chunk_size)
-        if not data:
-            break
-        yield data
-
-#   To prevent caching static files
-@app.context_processor
-def override_url_for():
-    return dict(url_for=dated_url_for)
-
-def dated_url_for(endpoint, **values):
-    if endpoint == 'static':
-        filename = values.get('filename', None)
-        if filename:
-            file_path = os.path.join(app.root_path, endpoint, filename)
-            values['q'] = int(os.stat(file_path).st_mtime)
-    return url_for(endpoint, **values)
 
 @socketio.on("connect")
 def on_connect():
@@ -72,11 +47,11 @@ def on_disconnect():
         p = pd_users_process.pop(disconnected_user.id)
         if p.poll() == None:
             p.kill()
-            #   Delete custom pd file
-            try:
-                os.remove(f'./{disconnected_user.port}.pd')
-            except FileNotFoundError:
-                pass
+        #   Delete custom pd file
+        try:
+            os.remove(f'./{disconnected_user.port}.pd')
+        except FileNotFoundError:
+            pass
         print(f'{request.sid} disconnected')
         print(f'emitting event user_disconnected {disconnected_user.as_json()}')
         socketio.emit('user_disconnected', {'user': disconnected_user.as_json()})
@@ -89,18 +64,15 @@ def set_control(control_data: dict):
     #   Send an update event
     user_id = request.sid
     if user_id in conn_users:
+        user: User
+        user = conn_users.get(user_id)
+        user.audio_conf.update(control_data)
+        pd_socket = Pd('localhost', user.port)
+        # pd_socket.send(f'{control_data["reverb"]} {control_data["delay"]} {control_data["damp"]}')
+        pd_socket.send(user.audio_conf_as_pd_payload())
         print(f'{user_id} updated his control')
-        cur_user: User
-        cur_user = conn_users.get(user_id)
-        cur_user.audio_conf = control_data
-        print((conn_users.get(user_id)).audio_conf)
-        print(f'emitting event update_control {cur_user.as_json()}')
-        socketio.emit('update_control', {'user': cur_user.as_json()})
-        pd_socket = Pd('localhost', cur_user.port)
-        # TODO SEND CORRECT ARGS
-        pd_socket.send(f'{control_data["gain"]} {control_data["delay"]} {control_data["reverb"]}')
         for control, value in control_data.items():
-            print(user_id, control, value)
+            print(control, value)
 
 @socketio.on('user_join')
 def on_join():
@@ -110,6 +82,7 @@ def on_join():
         user: User
         user = conn_users[user_id]
         joined_users[user_id] = user
+        # base_pd_path = './example.pd'
         base_pd_path = './base.pd'
         user_pd_path = f'./{user.port}.pd'
         print(f'{user.id} joined the stream')
@@ -125,8 +98,9 @@ def on_join():
             pd_users_process[user_id] = p
         #   Send default pd input
         pd_socket = Pd('localhost', user.port)
-        pd_socket.send_async(f'{user.audio_conf["gain"]} {user.audio_conf["delay"]} {user.audio_conf["reverb"]}', repeat_until_connect=True)
-        socketio.emit('stream', {'source': f'{util.get_ip_address()}:{config.STREAM_ENDPOINT_PORT}/{user.port}.mp3'})
+        # pd_socket.send_async(f'{user.audio_conf["reverb"]} {user.audio_conf["delay"]} {user.audio_conf["damp"]}', repeat_until_connect=True)
+        pd_socket.send_async(user.audio_conf_as_pd_payload(), repeat_until_connect=True)
+        socketio.emit('stream', {'source': f'http://{util.get_ip_address()}:{config.STREAM_ENDPOINT_PORT}/{user.port}.mp3'})
 
 
 
@@ -137,10 +111,21 @@ if __name__ == "__main__":
     print(f'To access externally, open this address from your device {ip}')
     #   Write/Update json config
     import json
+    import shutil
+    import os
+    import ntpath
     with open('../frontend/src/config.json', mode='w') as file:
         json.dump({    
             "endpoint_port": str(config.API_ENDPOINT_PORT),
             "endpoint_ip": ip
         }, file)
+    
+    #   Copy file from ../sound to this directory.
+    for file in util.iterateFilesFromDir('../../sound', file_type='.pd'):
+        file_name = ntpath.basename(file)
+        shutil.copyfile(file, f'./{file_name}')
+        if file_name == 'main.pd':
+            shutil.copyfile(file, './base.pd')
 
+    #   Run Webserver
     socketio.run(app, host="0.0.0.0", port=config.API_ENDPOINT_PORT)

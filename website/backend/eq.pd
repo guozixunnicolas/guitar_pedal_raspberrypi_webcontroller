@@ -1,4 +1,4 @@
-#N canvas 65 53 1855 1027 10;
+#N canvas 65 81 928 999 10;
 #X obj 702 126 *~ 1;
 #X obj 1029 517 outlet~;
 #X obj 702 88 inlet~;
@@ -20,35 +20,34 @@
 -1 0 1;
 #X obj 814 88 loadbang;
 #X msg 815 144 0;
-#X obj 121 300 vsl 20 128 0 1 0 0 eq5_4 empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 147 300 vsl 20 128 0 1 0 0 eq5_5 empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 69 300 vsl 20 128 0 1 0 0 eq5_2 empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 95 300 vsl 20 128 0 1 0 0 eq5_3 empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+#X obj 121 300 vsl 20 128 0 1 0 0 eq5_4 b5 empty 0 -9 0 10 -262144
+-1 -1 6350 1;
+#X obj 147 300 vsl 20 128 0 1 0 0 eq5_5 b6 empty 0 -9 0 10 -262144
+-1 -1 7620 1;
+#X obj 69 300 vsl 20 128 0 1 0 0 eq5_2 b3 empty 0 -9 0 10 -262144 -1
+-1 3810 1;
+#X obj 95 300 vsl 20 128 0 1 0 0 eq5_3 b4 empty 0 -9 0 10 -262144 -1
+-1 5080 1;
 #N canvas 3 56 450 250 (subpatch) 0;
 #X array \$0-array1 8 float 5;
-#A 0 0.171429 0.178572 0.121427 0.121427 0.107141 0.114284 0.114284
-0.285718;
+#A 0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.285718;
 #X coords 0 1 7 0 210 140 1 0 0;
 #X restore 16 449 graph;
 #X obj 16 127 f;
 #X obj 114 76 + 1;
-#X floatatom 16 165 5 0 0 0 - - -, f 5;
-#X floatatom 64 170 5 0 0 0 - - -, f 5;
+#X floatatom 16 165 5 0 0 0 - - -;
+#X floatatom 64 170 5 0 0 0 - - -;
 #X obj 763 395 mtof;
-#X floatatom 745 384 5 0 0 0 - - -, f 5;
-#X floatatom 763 433 10 0 0 0 - - -, f 10;
+#X floatatom 745 384 5 0 0 0 - - -;
+#X floatatom 763 433 10 0 0 0 - - -;
 #X obj 702 443 lop~;
 #X msg 763 357 100;
 #X obj 763 319 loadbang;
 #X text 786 62 (deja la voz audible);
-#X floatatom 852 404 5 0 1 2 eq5_pre eq5_pre -, f 5;
+#X floatatom 852 404 5 0 1 2 eq5_pre eq5_pre -;
 #X obj 824 443 loadbang;
 #X msg 904 466 set \$1;
-#X msg 872 497 0.26087;
+#X msg 872 497 0.777;
 #X obj 702 481 *~;
 #X obj 843 537 s eq5_init_pre;
 #X obj 702 537 s~ \$0-a_eq5;
@@ -69,15 +68,15 @@
 #X obj 162 265 hradio 15 1 0 2 empty empty bar|graph -60 7 0 10 -262144
 -1 -1 0;
 #X obj 161 666 *~;
-#X floatatom 239 666 5 0 1 2 eq5_1 eq5_1 -, f 5;
+#X floatatom 239 666 5 0 1 2 eq5_1 eq5_1 -;
 #X obj 311 675 *~;
-#X floatatom 404 675 5 0 1 2 eq5_2 eq5_2 -, f 5;
+#X floatatom 404 675 5 0 1 2 eq5_2 eq5_2 -;
 #X obj 800 681 *~;
-#X floatatom 915 681 5 0 1 2 eq5_5 eq5_5 -, f 5;
+#X floatatom 915 681 5 0 1 2 eq5_5 eq5_5 -;
 #X obj 476 689 *~;
-#X floatatom 572 677 5 0 1 2 eq5_3 eq5_3 -, f 5;
+#X floatatom 572 677 5 0 1 2 eq5_3 eq5_3 -;
 #X obj 640 679 *~;
-#X floatatom 733 679 5 0 1 2 eq5_4 eq5_4 -, f 5;
+#X floatatom 733 679 5 0 1 2 eq5_4 eq5_4 -;
 #X obj 165 889 lop~ 150;
 #X obj 310 892 lop~ 625;
 #X obj 311 848 hip~ 150;
@@ -87,19 +86,19 @@
 #X obj 642 896 lop~ 10000;
 #X obj 198 720 loadbang;
 #X msg 239 701 set \$1;
-#X msg 207 758 0.399998;
+#X msg 207 758 0.2;
 #X obj 334 721 loadbang;
 #X msg 404 710 set \$1;
-#X msg 372 767 0.421427;
+#X msg 372 767 0.3;
 #X obj 502 723 loadbang;
 #X msg 572 712 set \$1;
-#X msg 540 769 0.371426;
+#X msg 540 769 0.4;
 #X obj 663 725 loadbang;
 #X msg 733 714 set \$1;
-#X msg 701 771 0.292852;
+#X msg 701 771 0.5;
 #X obj 849 727 loadbang;
 #X msg 915 716 set \$1;
-#X msg 883 773 0.214279;
+#X msg 883 773 0.6;
 #X obj 207 796 s eq5_init_1;
 #X obj 351 814 s eq5_init_2;
 #X obj 540 807 s eq5_init_3;
@@ -118,8 +117,8 @@
 #X obj 162 53 loadbang;
 #X msg 162 85 0;
 #X obj 1099 479 r~ \$0-bypassedSignal;
-#X obj 201 265 tgl 15 0 \$0-eq5By empty by 0 -7 0 10 -262144 -1 -1
-0 1;
+#X obj 201 265 tgl 15 0 \$0-eq5By bps by 0 -7 0 10 -262144 -1 -1 0
+1;
 #X obj 304 209 del 50;
 #X obj 335 579 tabwrite \$0-array1;
 #X obj 62 149 tabread \$0-array1;
@@ -130,45 +129,45 @@
 #X msg 456 303 4;
 #X text 706 62 LO;
 #X obj 18 667 *~;
-#X floatatom 96 648 5 0 1 2 eq5_0 eq5_0 -, f 5;
+#X floatatom 96 648 5 0 1 2 eq5_0 eq5_0 -;
 #X obj 29 717 loadbang;
 #X msg 96 713 set \$1;
-#X msg 64 759 0.449999;
+#X msg 64 759 0.1;
 #X obj 18 614 r~ \$0-a_eq5;
 #X obj 18 923 throw~ \$0-de_eq5;
 #X obj 997 695 *~;
-#X floatatom 1112 695 5 0 1 2 eq5_6 eq5_6 -, f 5;
+#X floatatom 1112 695 5 0 1 2 eq5_6 eq5_6 -;
 #X obj 1046 741 loadbang;
 #X msg 1112 730 set \$1;
-#X msg 1080 787 0.12142;
+#X msg 1080 787 0.7;
 #X obj 999 628 r~ \$0-a_eq5;
 #X obj 997 939 throw~ \$0-de_eq5;
 #X obj 1202 672 *~;
-#X floatatom 1317 674 5 0 1 2 eq5_7 eq5_7 -, f 5;
+#X floatatom 1317 674 5 0 1 2 eq5_7 eq5_7 -;
 #X obj 1251 720 loadbang;
 #X msg 1317 709 set \$1;
-#X msg 1285 766 0.12142;
+#X msg 1285 766 0.8;
 #X obj 1198 632 r~ \$0-a_eq5;
 #X obj 1202 918 throw~ \$0-de_eq5;
 #X text 1202 598 LO;
-#X obj 172 300 vsl 20 128 0 1 0 0 eq5_6 empty hi 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 45 300 vsl 20 128 0 1 0 0 eq5_1 empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 199 300 vsl 20 128 0 1 0 0 eq5_7 empty hi 0 -9 0 10 -262144
--1 -1 0 1;
+#X obj 172 300 vsl 20 128 0 1 0 0 eq5_6 b7 hi 0 -9 0 10 -262144 -1
+-1 8890 1;
+#X obj 45 300 vsl 20 128 0 1 0 0 eq5_1 b2 empty 0 -9 0 10 -262144 -1
+-1 2540 1;
+#X obj 199 300 vsl 20 128 0 1 0 0 eq5_7 b8 hi 0 -9 0 10 -262144 -1
+-1 10160 1;
 #X msg 492 303 5;
 #X msg 528 303 6;
 #X msg 564 303 7;
-#X obj 19 300 vsl 20 128 0 1 0 0 eq5_0 empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+#X obj 19 300 vsl 20 128 0 1 0 0 eq5_0 b1 empty 0 -9 0 10 -262144 -1
+-1 1270 1;
 #X obj 100 120 mod 8;
 #X obj 39 239 route 0 1 2 3 4 5 6 7;
 #X obj 1035 834 s eq5_init_6;
 #X obj 1240 813 s eq5_init_7;
 #X obj 64 797 s eq5_init_0;
-#X obj 21 274 hsl 70 15 0 1 0 0 eq5_pre empty preamp -2 -8 0 10 -232576
--1 -1 0 1;
+#X obj 21 274 hsl 70 15 0 1 0 0 eq5_pre pamp preamp -2 -8 0 10 -232576
+-1 -1 5361 1;
 #X obj 801 865 hip~ 3750;
 #X obj 801 908 lop~ 15000;
 #X obj 1000 902 lop~ 17500;
@@ -183,6 +182,16 @@
 #X text 486 580 right inlet \, which node;
 #X text 233 582 left \, node val;
 #X obj 16 90 metro 50;
+#X obj 290 22 r b1;
+#X obj 348 27 r b2;
+#X obj 405 27 r b3;
+#X obj 455 28 r b4;
+#X obj 508 27 r b5;
+#X obj 559 28 r b6;
+#X obj 609 29 r b7;
+#X obj 656 26 r b8;
+#X obj 715 29 r pamp;
+#X obj 782 28 r bps;
 #X connect 0 0 4 0;
 #X connect 0 0 11 0;
 #X connect 2 0 0 0;

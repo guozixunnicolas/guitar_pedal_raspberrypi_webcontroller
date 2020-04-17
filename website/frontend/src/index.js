@@ -19,19 +19,19 @@ class App extends React.Component {
                     max: 10,
                     step: 1
                 },
-                gain: {
-                    value: 0,
-                    min: 0,
-                    max: 100,
-                    step: 1
-                },
                 reverb: {
                     value: 0,
                     min: 0,
                     max: 100,
                     step: 1
                 },
-                delay: {
+                roomsize: {
+                    value: 0,
+                    min: 0,
+                    max: 100,
+                    step: 1
+                },
+                damp: {
                     value: 0,
                     min: 0,
                     max: 100,
@@ -48,10 +48,17 @@ class App extends React.Component {
                     min: 0,
                     max: 100,
                     step: 1
-                }
+                },
+                delay: {
+                    value: 0,
+                    min: 0,
+                    max: 100,
+                    step: 1
+                },
             },
             isStreaming: false,
             streamSource: null,
+            fieldsetRef: React.createRef(),
         }
     }
     setSocketListeners() {
@@ -75,6 +82,9 @@ class App extends React.Component {
     }
     componentDidMount() {
         this.setSocketListeners();
+        let fixed = this.state.fieldsetRef.current;
+        //  Disable scrolling inside the fieldset when using mobile
+        fixed.addEventListener('touchmove', (e) => {}, false);
     }
     handleControlChange(event) {
         let controls = this.state.controls;
@@ -98,6 +108,7 @@ class App extends React.Component {
             this.socket.emit('user_join');
         }
     }
+    // Handle submitting control when the values are changed via socket connection
     submitControl(event) {
         let controls = this.state.controls;
         let payload = {};
@@ -131,7 +142,7 @@ class App extends React.Component {
         //  TODO: Where to get the audio stream from backend?
         return (
             <div id='app'>
-                <fieldset>
+                <fieldset ref={this.state.fieldsetRef}>
                     <legend>Equalizer</legend>
                     {this.generateControls()}
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
