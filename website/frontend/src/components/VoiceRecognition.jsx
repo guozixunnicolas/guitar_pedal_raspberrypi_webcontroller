@@ -24,18 +24,26 @@ const Dictaphone = ({
     interimTranscript,
     recognition
     }) => {
-
+    
+        
+    // Set recognition language
     recognition.lang = "en-GB";
 
+
+    // If browser not support SpeechRecognition then do not output anything
     if (!browserSupportsSpeechRecognition) {
         return null;
         }
 
+
+    // Correct "Jess" to "Jazz"
     if (interimTranscript === "Jess") {
         interimTranscript = "Jazz"
     }
     
-    if (listening) {
+
+    // If mic is ON (currently listen)
+    if (listening) {    
         return (
             <div>
                 <button onClick={stopListening}>Stop</button>
@@ -44,8 +52,13 @@ const Dictaphone = ({
             </div>
             );
         }  
+    
+
+    // If mic is OFF (not listen)
     else {
-        if (transcript === "") {
+
+        // If there is nothing in transcript
+        if (transcript === "") {        
             return (
                 <div>
                     <button onClick={startListening}>Start</button>
@@ -54,7 +67,9 @@ const Dictaphone = ({
                 </div>
             );
         }
-        else {
+        
+        // If there IS something in transcript
+        else {                          
             return (
                 <div>
                     <button onClick={startListening}>Send Commands</button>
