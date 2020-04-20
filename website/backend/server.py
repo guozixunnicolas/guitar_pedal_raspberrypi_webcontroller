@@ -57,6 +57,7 @@ def on_disconnect():
         socketio.emit('user_disconnected', {'user': disconnected_user.as_json()})
         joined_users.pop(request.sid)
     except KeyError:
+        print(f'{request.sid} is not in connected users lists')
         pass
 
 @socketio.on('set_control')
@@ -69,7 +70,9 @@ def set_control(control_data: dict):
         user.audio_conf.update(control_data)
         pd_socket = Pd('localhost', user.port)
         # pd_socket.send(f'{control_data["reverb"]} {control_data["delay"]} {control_data["damp"]}')
-        pd_socket.send(user.audio_conf_as_pd_payload())
+        pd_socket.send_async(user.audio_conf_as_pd_payload())
+        print('Sending payload as')
+        print(user.audio_conf_as_pd_payload())
         print(f'{user_id} updated his control')
         for control, value in control_data.items():
             print(control, value)
@@ -89,18 +92,18 @@ def on_join():
         #   Set new pd patch file
         pd_patch = Pd_Patch(base_pd_path)
         #   TODO    Set mountpoint etc
-        pd_patch.set_mountpoint(user.port)
+        pd_patch.set_mountpoint(f'stream{user.port}.mp3')
         pd_patch.set_port_netreceive(f'{user.port}', user_pd_path)
         #   Open new pd subprocess with new pd patch
         if user_id not in pd_users_process:
             print(f'Opening new pd process on port {user.port}')
-            p = subprocess.Popen(['pd', '-nogui', user_pd_path])
+            p = subprocess.Popen(['pd', user_pd_path])
             pd_users_process[user_id] = p
         #   Send default pd input
         pd_socket = Pd('localhost', user.port)
         # pd_socket.send_async(f'{user.audio_conf["reverb"]} {user.audio_conf["delay"]} {user.audio_conf["damp"]}', repeat_until_connect=True)
-        pd_socket.send_async(user.audio_conf_as_pd_payload(), repeat_until_connect=True)
-        socketio.emit('stream', {'source': f'http://{util.get_ip_address()}:{config.STREAM_ENDPOINT_PORT}/{user.port}.mp3'})
+        pd_socket.send(user.audio_conf_as_pd_payload(), repeat_until_connect=True)
+        socketio.emit('stream', {'source': f'http://{util.get_ip_address()}:{config.STREAM_ENDPOINT_PORT}/stream{user.port}.mp3'})
 
 
 

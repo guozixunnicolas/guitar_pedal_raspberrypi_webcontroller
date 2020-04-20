@@ -1,5 +1,5 @@
 #N canvas 65 53 1855 1027 10;
-#X obj 120 73 tgl 25 0 empty recd empty 17 7 0 25 -262144 -1 -1 1 1
+#X obj 120 73 tgl 25 0 empty recd empty 17 7 0 25 -262144 -1 -1 0 1
 ;
 #X obj 458 283 *;
 #X obj 506 279 samplerate~;
@@ -171,7 +171,7 @@
 -1;
 #X obj 605 176 s empty_table;
 #X text 168 41 Tempo;
-#X obj 480 413 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 480 413 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X text 698 654 Pierre Massat \, Guitar Extended \, 2013;
 #X text 562 473 Here we play the table (loop) continuously.;
@@ -185,7 +185,7 @@
 #X text 288 264 of the table in samples \, as;
 #X text 289 291 block size.;
 #X text 289 279 a multiple of the;
-#X obj 312 87 tgl 15 0 empty onoff empty 17 7 0 10 -262144 -1 -1 1
+#X obj 312 87 tgl 15 0 empty onoff empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X msg 449 393 1;
 #X obj 605 120 t b b;
@@ -328,6 +328,7 @@
 #X obj 693 30 r clr;
 #X obj 821 31 r revs;
 #X obj 746 32 r onoff;
+#X obj 307 59 loadbang;
 #X connect 0 0 12 0;
 #X connect 1 0 15 0;
 #X connect 2 0 1 1;
@@ -390,4 +391,5 @@
 #X connect 79 0 73 0;
 #X connect 82 0 10 0;
 #X connect 82 0 83 0;
+#X connect 89 0 51 0;
 #X coords 0 -1 1 1 400 100 1 100 25;

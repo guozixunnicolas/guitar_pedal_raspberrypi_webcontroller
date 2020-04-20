@@ -20,6 +20,12 @@ class App extends React.Component {
                     max: 10,
                     step: 1
                 },
+                volume: {
+                    value: 0,
+                    min: 0,
+                    max: 100,
+                    step: 1
+                },
                 reverb: {
                     value: 0,
                     min: 0,
@@ -147,7 +153,7 @@ class App extends React.Component {
                     <legend>Equalizer</legend>
                     {this.generateControls()}
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
-                    {this.state.isStreaming && <audio autoPlay="true" src={this.state.streamSource} />}
+                    {this.state.isStreaming && <audio autoPlay src={this.state.streamSource} />}
                 </fieldset>
                 <fieldset>
                     <VoiceRecognition></VoiceRecognition>
