@@ -6,6 +6,7 @@ import './index.css';
 import Control from './components/ControlBar';
 import EqualizerButton from './components/EqualizerBar';
 import config from './config.json';
+import VoiceRecognition from './components/VoiceRecognition';
 
 class App extends React.Component {
     constructor(props) {
@@ -135,6 +136,7 @@ class App extends React.Component {
                 controls.push(<Control onMouseUpCapture={(e) => this.submitControl(e)} onChange={(e) => this.handleControlChange(e)} key={key.toLowerCase()} min={cur_controls[key].min} max={cur_controls[key].max} value={cur_controls[key].value} label={key.toLowerCase()} step={cur_controls[key].step} className="control" />)
             }
         }
+        // controls.push(<Control min="0" max="100" label="Volume" className="slider" />)
         return controls;
     }
     render() {
@@ -146,6 +148,9 @@ class App extends React.Component {
                     {this.generateControls()}
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
                     {this.state.isStreaming && <audio autoPlay src={this.state.streamSource} />}
+                </fieldset>
+                <fieldset>
+                    <VoiceRecognition></VoiceRecognition>
                 </fieldset>
                 {/* <button class="button button-blue">
                     <i class="fa fa-cloud-download"></i>
