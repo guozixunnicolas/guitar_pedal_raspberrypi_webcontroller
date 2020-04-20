@@ -25,12 +25,6 @@ class App extends React.Component {
                     max: 100,
                     step: 1
                 },
-                reverb: {
-                    value: 0,
-                    min: 0,
-                    max: 100,
-                    step: 1
-                },
                 roomsize: {
                     value: 0,
                     min: 0,
@@ -58,7 +52,7 @@ class App extends React.Component {
                 delay: {
                     value: 0,
                     min: 0,
-                    max: 100,
+                    max: 1000,
                     step: 1
                 },
             },
