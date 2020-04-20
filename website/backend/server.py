@@ -97,7 +97,7 @@ def on_join():
         #   Open new pd subprocess with new pd patch
         if user_id not in pd_users_process:
             print(f'Opening new pd process on port {user.port}')
-            p = subprocess.Popen(['pd', user_pd_path])
+            p = subprocess.Popen(['pd', '-nogui', user_pd_path])
             pd_users_process[user_id] = p
         #   Send default pd input
         pd_socket = Pd('localhost', user.port)
