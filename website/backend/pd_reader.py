@@ -16,7 +16,7 @@ class Pd_Patch(object):
                         args = line.split(' ')
                         args[-1] = str(value) + ';\n'
                         line = ' '.join(args)
-                        occurence = occurence + 1
+                    occurence = occurence + 1
                 lines.append(line)
 
         with open(write_path, 'w') as file:
