@@ -21,7 +21,6 @@ class EqualizerButton extends React.Component {
                 for(const children of this.state._equalizer_ref.current.children) {
                     children.classList.toggle('playEqualizer')
                 }
-                console.log(this.state._btn_ref.current);
                 this.props.onClick(this.state.active);
             }
         })
