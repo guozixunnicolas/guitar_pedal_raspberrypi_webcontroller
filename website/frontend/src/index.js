@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 // import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 import Control from './components/ControlBar';
+import Bang from './components/ControlBang';
 import EqualizerButton from './components/EqualizerBar';
 import config from './config.json';
 import VoiceRecognition from './components/VoiceRecognition';
@@ -57,6 +58,30 @@ class App extends React.Component {
                     max: 1000,
                     step: 1
                 },
+                "record": {
+                    value: 0,
+                    min: 0,
+                    max: 1,
+                    step: 1
+                },
+                "looper tempo": {
+                    value: "bang",
+                    min: 0,
+                    max: 1,
+                    step: 1
+                },
+                "looper clear": {
+                    value: "bang",
+                    min: 0,
+                    max: 1,
+                    step: 1
+                },
+                "looper reverse": {
+                    value: "bang",
+                    min: 0,
+                    max: 1,
+                    step: 1
+                },
             },
             isStreaming: false,
             streamSource: null,
@@ -99,14 +124,16 @@ class App extends React.Component {
             controls['equalizer'].value[eq_no] = parseInt(event.target.value);
         }
         else {
-            controls[id].value = parseInt(event.target.value);
+            if (String(id).startsWith('looper'))
+                controls[id].value = event.target.value === "bang" ? event.target.value : parseInt(event.target.value);
+            else
+                controls[id].value = parseInt(event.target.value);
         }
         this.setState({
             controls: controls
         });
     }
     handleUserJoin(isUserFirstJoin) {
-        //  TODO: Handle Userjoin (Emit particular event to backend)
         console.log('Joining');
         if (isUserFirstJoin) {
             this.socket.emit('user_join');
@@ -136,10 +163,13 @@ class App extends React.Component {
                 controls.push(<div id="equalizer-board" key={`${key}-board`}>{enclosure}</div>)
             }
             else {
-                controls.push(<Control onMouseUpCapture={(e) => this.submitControl(e)} onChange={(e) => this.handleControlChange(e)} key={key.toLowerCase()} min={cur_controls[key].min} max={cur_controls[key].max} value={cur_controls[key].value} label={key.toLowerCase()} step={cur_controls[key].step} className="control" />)
+                let isBoolControl = (cur_controls[key].max - cur_controls[key].min + 1) / cur_controls[key].step === 2 ? true : false;
+                if (isBoolControl)
+                    controls.push(<Bang onSubmit={(e) => this.submitControl(e)} onChange={(e) => this.handleControlChange(e)} key={key.toLowerCase()} value={cur_controls[key].value} label={key.toLowerCase()} bang={key.toLowerCase().startsWith('looper')} className={key.toLowerCase().startsWith('looper') ? "bang__input" : "tgl tgl-skewed"} />);
+                else
+                    controls.push(<Control onMouseUpCapture={(e) => this.submitControl(e)} onChange={(e) => this.handleControlChange(e)} key={key.toLowerCase()} min={cur_controls[key].min} max={cur_controls[key].max} value={cur_controls[key].value} label={key.toLowerCase()} step={cur_controls[key].step} className="control" />)
             }
         }
-        // controls.push(<Control min="0" max="100" label="Volume" className="slider" />)
         return controls;
     }
     render() {
@@ -152,17 +182,13 @@ class App extends React.Component {
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
                     {this.state.isStreaming && <audio autoPlay src={this.state.streamSource} />}
                 </fieldset>
-                <fieldset>
-                    <VoiceRecognition></VoiceRecognition>
-                </fieldset>
-                <fieldset>
-                    {/* <VoiceSpecs></VoiceSpecs> */}
-                    <Canvas></Canvas>
-                </fieldset>
-                {/* <button class="button button-blue">
-                    <i class="fa fa-cloud-download"></i>
-                    <strong>Join Stream</strong>
-                </button> */}
+                <VoiceRecognition></VoiceRecognition>
+                {this.state.isStreaming && 
+                    <fieldset>
+                        {/* <VoiceSpecs></VoiceSpecs> */}
+                        {/* <Canvas source={this.state.rawSource} /> */}
+                    </fieldset>
+                }
             </div>
         )
     }
