@@ -72,7 +72,7 @@ const Dictaphone = ({
         else {                          
             return (
                 <div>
-                    <button onClick={startListening}>Send Commands</button>
+                    <button onClick={resetTranscript}>Send Commands</button>
                     <button onClick={resetTranscript}>Reset</button>
                     <span>{transcript}</span>
                 </div>

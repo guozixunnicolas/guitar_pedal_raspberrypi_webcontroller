@@ -7,6 +7,7 @@ import Control from './components/ControlBar';
 import EqualizerButton from './components/EqualizerBar';
 import config from './config.json';
 import VoiceRecognition from './components/VoiceRecognition';
+import Canvas from './components/Canvas'
 
 class App extends React.Component {
     constructor(props) {
@@ -157,6 +158,10 @@ class App extends React.Component {
                 </fieldset>
                 <fieldset>
                     <VoiceRecognition></VoiceRecognition>
+                </fieldset>
+                <fieldset>
+                    {/* <VoiceSpecs></VoiceSpecs> */}
+                    <Canvas></Canvas>
                 </fieldset>
                 {/* <button class="button button-blue">
                     <i class="fa fa-cloud-download"></i>
