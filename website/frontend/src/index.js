@@ -60,6 +60,7 @@ class App extends React.Component {
             },
             isStreaming: false,
             streamSource: null,
+            rawSource: null,
             fieldsetRef: React.createRef(),
         }
     }
@@ -79,6 +80,7 @@ class App extends React.Component {
             this.setState({
                 isStreaming: true,
                 streamSource: data.source,
+                rawSource: data.raw
             })
         });
     }
