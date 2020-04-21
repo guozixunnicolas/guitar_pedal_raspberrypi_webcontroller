@@ -87,6 +87,8 @@ class App extends React.Component {
             streamSource: null,
             rawSource: null,
             fieldsetRef: React.createRef(),
+            streamRef: React.createRef(),
+            rawRef: React.createRef()
         }
     }
     setSocketListeners() {
@@ -173,19 +175,19 @@ class App extends React.Component {
         return controls;
     }
     render() {
-        //  TODO: Where to get the audio stream from backend?
         return (
             <div id='app'>
                 <fieldset ref={this.state.fieldsetRef}>
                     <legend>Equalizer</legend>
                     {this.generateControls()}
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
-                    {this.state.isStreaming && <audio autoPlay src={this.state.streamSource} />}
+                    {this.state.isStreaming && <audio crossOrigin="anonymous" autoPlay src={this.state.streamSource} id='audio_stream_data' ref={this.state.streamRef} />}
+                    {this.state.isStreaming && <audio crossOrigin="anonymous" autoPlay muted={true} src={this.state.rawSource} id='audio_stream_raw' ref={this.state.rawRef} />}
                 </fieldset>
                 {/* <VoiceRecognition></VoiceRecognition>
-                {this.state.isStreaming && 
+                {this.state.isStreaming && this.state.streamRef.current && this.state.rawRef.current &&
                     <fieldset>
-                        <Canvas source={this.state.rawSource} />
+                        <Canvas rawSource={this.state.rawRef.current} streamSource={this.state.streamRef.current} />
                     </fieldset>
                 } */}
             </div>
