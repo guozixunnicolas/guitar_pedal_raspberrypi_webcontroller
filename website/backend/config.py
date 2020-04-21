@@ -16,13 +16,13 @@ STREAM_ENDPOINT_PORT = 8000
 #   Pd Audio Control
 #   equalizer -> normalized between [0, 1] from [0, 10]
 #   Others -> normalized between [0, 1] from [0, 100]
-#   fixed_<field> -> does not get normalized. Will be send in raw data.
+#   fixed_<field> -> does not get normalized. Will be send in raw data. Is not setable from frontend
 #   delay -> not normalized.
 
 EQUALIZER_NORMALIZED_CONST = 10
 CONTROLS_NORMALIZED_CONST = 100
 
-NOT_NORMALIZED_CONST_PREFIX = ['delay', 'fixed']
+NOT_NORMALIZED_CONST_PREFIX = ['delay', 'fixed', 'looper', 'record']
 
 default_control = {
     "equalizer": [1, 2, 3, 4, 5, 4, 3, 2],
@@ -34,11 +34,11 @@ default_control = {
     "wet": 0,
     "delay": 100,
     "fixed_val": 0.1,
-    "fixed_record": 0,
-    "fixed_tempo": 0,
-    "fixed_clear": 0,
+    "record": 0,
+    "looper tempo": 0,
+    "looper clear": 0,
     "fixed_audio": 1,
-    "fixed_reverse": 0
+    "looper reverse": 0
 }
 
 #   fixed_<field> is readonly by server. Not writeable from client.
