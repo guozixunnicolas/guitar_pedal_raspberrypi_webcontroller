@@ -17,20 +17,22 @@ STREAM_ENDPOINT_PORT = 8000
 #   equalizer -> normalized between [0, 1] from [0, 10]
 #   Others -> normalized between [0, 1] from [0, 100]
 #   fixed_<field> -> does not get normalized. Will be send in raw data.
+#   delay -> not normalized.
 
 EQUALIZER_NORMALIZED_CONST = 10
 CONTROLS_NORMALIZED_CONST = 100
+
+NOT_NORMALIZED_CONST_PREFIX = ['delay', 'fixed']
 
 default_control = {
     "equalizer": [1, 2, 3, 4, 5, 4, 3, 2],
     "volume": 70,
     "fixed_bypass": 0,
-    "reverb": 10,
     "roomsize": 50,
     "damp": 90,
     "dry": 10,
     "wet": 0,
-    "delay": 0,
+    "delay": 100,
     "fixed_val": 0.1,
     "fixed_record": 0,
     "fixed_tempo": 0,
