@@ -182,13 +182,12 @@ class App extends React.Component {
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
                     {this.state.isStreaming && <audio autoPlay src={this.state.streamSource} />}
                 </fieldset>
-                <VoiceRecognition></VoiceRecognition>
+                {/* <VoiceRecognition></VoiceRecognition>
                 {this.state.isStreaming && 
                     <fieldset>
-                        {/* <VoiceSpecs></VoiceSpecs> */}
-                        {/* <Canvas source={this.state.rawSource} /> */}
+                        <Canvas source={this.state.rawSource} />
                     </fieldset>
-                }
+                } */}
             </div>
         )
     }
