@@ -6,46 +6,29 @@ class Canvas extends React.Component {
         // set up basic variables for app
 
         var canvas = document.getElementById('visual');
-        var canvas2 = document.getElementById('visual2');
+        var canvas_raw = document.getElementById('visual2');
 
         // visualiser setup - create web audio api context and canvas
 
         let audioCtx;
-        let audioCtx2;
+        let audioCtx_raw;
         const canvasCtx = canvas.getContext('2d');
-        const canvasCtx2 = canvas2.getContext('2d');
+        const canvasCtx2 = canvas_raw.getContext('2d');
 
         //main block for doing the audio recording
 
-        if (navigator.mediaDevices.getUserMedia) {
-            console.log('getUserMedia supported.');
-
-            const constraints = { audio: true };
-
-            let onSuccess = function(stream) {
-                visualize(stream, stream);
-            }
-
-            let onError = function(err) {
-                console.log('The following error occured: ' + err);
-            }
-            navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
-        }
-
-        else {
-            console.log('getUserMedia not supported on your browser!');
-        }
-
-        function visualize(stream, stream2) {
-            if(!audioCtx & !audioCtx2) {
+        function visualize(stream, stream_raw) {
+            if(!audioCtx) {
                 audioCtx = new AudioContext();
-                audioCtx2 = new AudioContext();
+            }
+            if(!audioCtx_raw) {
+                audioCtx_raw = new AudioContext();
             }
 
-            var source = audioCtx.createMediaStreamSource(stream);
-            var source2 = audioCtx2.createMediaStreamSource(stream2);
+            var source = audioCtx.createMediaElementSource(stream);
+            var source2 = audioCtx_raw.createMediaElementSource(stream_raw);
             var analyser = audioCtx.createAnalyser();
-            var analyser2 = audioCtx2.createAnalyser();
+            var analyser2 = audioCtx_raw.createAnalyser();
             analyser.minDecibels = -100;
             analyser.maxDecibels = 0;
             analyser.smoothingTimeConstant = 0.8;
@@ -61,14 +44,14 @@ class Canvas extends React.Component {
             canvas.width = window.innerWidth * 0.49;
             canvas.height = window.innerHeight * 0.45;
 
-            canvas2.width = window.innerWidth * 0.49;
-            canvas2.height = window.innerHeight * 0.45;
+            canvas_raw.width = window.innerWidth * 0.49;
+            canvas_raw.height = window.innerHeight * 0.45;
             
             var WIDTH = canvas.width; 
             var HEIGHT = canvas.height;
 
-            var WIDTH2 = canvas2.width; 
-            var HEIGHT2 = canvas2.height;
+            var WIDTH2 = canvas_raw.width; 
+            var HEIGHT2 = canvas_raw.height;
 
             var h1 = HEIGHT - 100;
             var h2 = HEIGHT2 - 100;
@@ -84,7 +67,7 @@ class Canvas extends React.Component {
             function calculate(){
                 for(var i = 0; i < bufferLength; i++) {
                     frequency[i] = i * audioCtx.sampleRate / 512;
-                    frequency2[i] = i * audioCtx2.sampleRate / 512;
+                    frequency2[i] = i * audioCtx_raw.sampleRate / 512;
         
                     // calculate bar width -> exponential -> logarithm
                     barWidth[i] = (Math.log(i+2)-Math.log(i+1))*WIDTH/Math.log(bufferLength);
@@ -470,6 +453,7 @@ class Canvas extends React.Component {
                 requestAnimationFrame(update); 
             }
         }
+        visualize(this.props.streamSource, this.props.rawSource);
     }
     render() {
         return(
