@@ -15,7 +15,6 @@ class ControlBar extends React.Component {
         };
     }
     handleSliderChange(event) {
-        // console.log(`From child component ${this.state.label}: ${event.target.value}`);
         this.setState({ value: event.target.value });
         this.props.onChange(event);
     }
