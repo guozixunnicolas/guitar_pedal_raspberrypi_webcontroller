@@ -149,9 +149,7 @@ class App extends React.Component {
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
                     {this.state.isStreaming && <audio autoPlay src={this.state.streamSource} />}
                 </fieldset>
-                <fieldset>
-                    <VoiceRecognition></VoiceRecognition>
-                </fieldset>
+                <VoiceRecognition />
                 {/* <button class="button button-blue">
                     <i class="fa fa-cloud-download"></i>
                     <strong>Join Stream</strong>
