@@ -110,6 +110,8 @@ def on_join():
         # pd_socket.send_async(f'{user.audio_conf["reverb"]} {user.audio_conf["delay"]} {user.audio_conf["damp"]}', repeat_until_connect=True)
         pd_socket.send(user.audio_conf_as_pd_payload(), repeat_until_connect=True)
         icecast_url = f'http://{util.get_ip_address()}:{config.STREAM_ENDPOINT_PORT}'
+        #   Wait for pd to successfully connect to icecast. Bad dirty way but quick and simple
+        socketio.sleep(1)
         socketio.emit('stream', {
             'source': f'{icecast_url}/{stream_mountpoint}',
             'raw': f'{icecast_url}/{raw_mountpoint}' 
