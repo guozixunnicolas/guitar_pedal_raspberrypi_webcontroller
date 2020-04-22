@@ -51,7 +51,7 @@ def restart_pi():
     else:
         return 'Not running on raspberrypi, aborting restart'
 
-def pi_to_discwebhook(message: str, url: str) -> str:
+def pi_to_discwebhook(message: str, url: str, embed: dict = {}) -> str:
     import platform
     isPi = platform.uname()[1] == 'raspberrypi'
     if isPi:
@@ -62,6 +62,8 @@ def pi_to_discwebhook(message: str, url: str) -> str:
         header = {'Content-Type': 'application/json'}
         data = {}
         data["content"] = message
+        data["embeds"] = []
+        data["embeds"].append(embed) if len(embed) else {}
         result = requests.post(url=url, data=json.dumps(data), headers=header)
         try:
             result.raise_for_status()
