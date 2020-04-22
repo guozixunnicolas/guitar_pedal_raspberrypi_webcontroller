@@ -159,7 +159,6 @@ if __name__ == "__main__":
     def signal_handler(sig, frame):
         util.pi_to_discwebhook(f'Server Closing...', config.WEBHOOK_URL)
         sys.exit(0)
-    signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     util.pi_to_discwebhook(f'Launching Audio Livestream Webserver on http://{ip}:{config.CLIENT_ENDPOINT_PORT}', config.WEBHOOK_URL)
     util.pi_to_discwebhook(f'To Shutdown Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/shutdown', config.WEBHOOK_URL)
