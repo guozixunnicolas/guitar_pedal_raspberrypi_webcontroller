@@ -165,6 +165,6 @@ if __name__ == "__main__":
     util.pi_to_discwebhook(f'To Shutdown Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/shutdown', config.WEBHOOK_URL)
     util.pi_to_discwebhook(f'To Restart Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/restart', config.WEBHOOK_URL)
     #   Delay to let the file finish copying before starting server. Bad practice but eh.
-    time.sleep(1)
+    time.sleep(3)
     #   Run Webserver
     socketio.run(app, host="0.0.0.0", port=config.API_ENDPOINT_PORT)
