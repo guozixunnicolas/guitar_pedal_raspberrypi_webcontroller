@@ -24,7 +24,7 @@ class Canvas extends React.Component {
             if(!audioCtx_raw) {
                 audioCtx_raw = new AudioContext();
             }
-
+            // console.log(stream_raw)
             var source = audioCtx.createMediaElementSource(stream);
             var source2 = audioCtx_raw.createMediaElementSource(stream_raw);
             var analyser = audioCtx.createAnalyser();
@@ -32,10 +32,17 @@ class Canvas extends React.Component {
             analyser.minDecibels = -100;
             analyser.maxDecibels = 0;
             analyser.smoothingTimeConstant = 0.8;
+
+            analyser2.minDecibels = -100;
+            analyser2.maxDecibels = 0;
+            analyser2.smoothingTimeConstant = 0.8;
             //analyser.fftSize = 32768;
             analyser.fftSize = 512;
+            analyser2.fftSize = 512;
             var bufferLength = analyser.frequencyBinCount;
+            var bufferLength2 = analyser2.frequencyBinCount;
             var dataArray = new Float32Array(bufferLength);
+            var dataArray2 = new Float32Array(bufferLength2);
             var frequency = new Array();
             var frequency2 = new Array();
             var barWidth = new Array();
@@ -58,7 +65,8 @@ class Canvas extends React.Component {
 
             source.connect(analyser);
             source2.connect(analyser2);
-            //   analyser.connect(audioCtx.destination);
+            analyser.connect(audioCtx.destination);
+            // analyser.connect(audioCtx2.destination);
 
             calculate()
 
@@ -78,16 +86,6 @@ class Canvas extends React.Component {
                 // clear
                 clearCanvas();
             }
-
-            function clearCanvas(){
-                canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-                canvasCtx2.fillRect(0, 0, WIDTH2, HEIGHT2);
-            }
-
-            function updateFreqDataArrayToPlot() {
-                analyser.getFloatFrequencyData(dataArray); 
-            }
-
             function drawOneLabel2(i, x, widthInBars, color) {
                 let fontSize = 14;
                 if(WIDTH < 600) {
@@ -363,6 +361,65 @@ class Canvas extends React.Component {
                 
             }
 
+            function drawLabel() {
+                canvasCtx.save();
+
+                let fontSize = 14;
+                canvasCtx.font =  fontSize + 'px Arial';
+                canvasCtx.testAlign='center';
+                canvasCtx.fillStyle = "black";
+                canvasCtx.fillText("", WIDTH/2-40, 30);
+                canvasCtx.restore();
+            }
+
+            function drawLabel2() {
+                canvasCtx2.save();
+
+                let fontSize = 14;
+                canvasCtx2.font =  fontSize + 'px Arial';
+                canvasCtx2.testAlign='center';
+                canvasCtx2.fillStyle = "#eee";
+                canvasCtx2.fillText("", WIDTH2/2-40, 30);
+                canvasCtx2.restore();
+            }
+
+
+            function drawFrequencyBars() {
+                canvasCtx.save();
+                
+                let x = 0;
+                //console.log(dataArray);
+                // draw bars (rectangles)
+                for(let i = 0; i < bufferLength; i++) {
+                    let barHeight = (dataArray[i]+140)*(h1/140);
+                
+                    barHeight /= (90 / (analyser.maxDecibels - analyser.minDecibels));
+                    
+                    if(barHeight < 0) barHeight = 0;
+
+                    // draw bar
+                    // this.ctx.fillStyle = 'rgb(0,'+(barHeight+50)+',0)';
+                    // nice blue....
+                    canvasCtx.fillStyle = "brown";
+
+                    // draw a bar
+                    canvasCtx.fillRect(x,h1-barHeight,barWidth[i],barHeight);
+                    x += barWidth[i] + 1;
+                }
+                
+                canvasCtx.restore();
+            }
+            function clearCanvas(){
+                canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+                canvasCtx2.fillRect(0, 0, WIDTH2, HEIGHT2);
+            }
+
+            function updateFreqDataArrayToPlot() {
+                analyser.getFloatFrequencyData(dataArray); 
+                analyser2.getFloatFrequencyData(dataArray2); 
+            }
+
+
 
             function drawFrequencyBars() {
                 canvasCtx.save();
@@ -394,12 +451,12 @@ class Canvas extends React.Component {
                 canvasCtx2.save();
                 
                 let z = 0;
-                //console.log(dataArray);
+                //console.log(dataArray2);
                 // draw bars (rectangles)
-                for(let i = 0; i < bufferLength; i++) {
-                    let barHeight2 = (dataArray[i]+140)*(h2/140);
+                for(let i = 0; i < bufferLength2; i++) {
+                    let barHeight2 = (dataArray2[i]+140)*(h2/140);
                     
-                    barHeight2 /= (90 / (analyser.maxDecibels - analyser.minDecibels));
+                    barHeight2 /= (90 / (analyser2.maxDecibels - analyser2.minDecibels));
                     
                     if(barHeight2 < 0) barHeight2 = 0;
 
@@ -413,27 +470,6 @@ class Canvas extends React.Component {
                     z += barWidth2[i] + 1;
                 }
                 
-                canvasCtx2.restore();
-            }
-            function drawLabel() {
-                canvasCtx.save();
-
-                let fontSize = 14;
-                canvasCtx.font =  fontSize + 'px Arial';
-                canvasCtx.testAlign='center';
-                canvasCtx.fillStyle = "black";
-                canvasCtx.fillText("", WIDTH/2-40, 30);
-                canvasCtx.restore();
-            }
-
-            function drawLabel2() {
-                canvasCtx2.save();
-
-                let fontSize = 14;
-                canvasCtx2.font =  fontSize + 'px Arial';
-                canvasCtx2.testAlign='center';
-                canvasCtx2.fillStyle = "#eee";
-                canvasCtx2.fillText("", WIDTH2/2-40, 30);
                 canvasCtx2.restore();
             }
 
@@ -452,6 +488,9 @@ class Canvas extends React.Component {
                 // repaint 60 times/s
                 requestAnimationFrame(update); 
             }
+
+
+        
         }
         visualize(this.props.streamSource, this.props.rawSource);
     }
