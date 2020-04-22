@@ -28,8 +28,8 @@ def iterateFilesFromDir(path: str, file_type: str = None):
                 yield os.path.join(root, file)
 
 def shut_down_pi():
-    import os
-    isPi = os.uname()[1] == 'raspberrypi'
+    import platform
+    isPi = platform.uname()[1] == 'raspberrypi'
     if isPi:
         command = "/usr/bin/sudo /sbin/shutdown -h now"
         import subprocess
@@ -40,8 +40,8 @@ def shut_down_pi():
         return 'Not running on raspberrypi, aborting shutdown'
 
 def restart_pi():
-    import os
-    isPi = os.uname()[1] == 'raspberrypi'
+    import platform
+    isPi = platform.uname()[1] == 'raspberrypi'
     if isPi:
         command = "/usr/bin/sudo /sbin/shutdown -r now"
         import subprocess
@@ -52,8 +52,8 @@ def restart_pi():
         return 'Not running on raspberrypi, aborting restart'
 
 def pi_to_discwebhook(message: str, url: str) -> str:
-    import os
-    isPi = os.uname()[1] == 'raspberrypi'
+    import platform
+    isPi = platform.uname()[1] == 'raspberrypi'
     if isPi:
         import requests
         import json
