@@ -14,9 +14,16 @@ def unique_random_n_digits(digit: int, cur_digit: set()):
         return num
 
 def get_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]
+    error = True
+    while error:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+            error = False
+        except OSError:
+            error = True
+    return ip
     
 def iterateFilesFromDir(path: str, file_type: str = None):
     for root, _, files in os.walk(path):
@@ -51,7 +58,7 @@ def restart_pi():
     else:
         return 'Not running on raspberrypi, aborting restart'
 
-def pi_to_discwebhook(message: str, url: str) -> str:
+def pi_to_discwebhook(message: str, url: str, embed: dict = {}) -> str:
     import platform
     isPi = platform.uname()[1] == 'raspberrypi'
     if isPi:
@@ -62,6 +69,8 @@ def pi_to_discwebhook(message: str, url: str) -> str:
         header = {'Content-Type': 'application/json'}
         data = {}
         data["content"] = message
+        data["embeds"] = []
+        data["embeds"].append(embed) if len(embed) else {}
         result = requests.post(url=url, data=json.dumps(data), headers=header)
         try:
             result.raise_for_status()

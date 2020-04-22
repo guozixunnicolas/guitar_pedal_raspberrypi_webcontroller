@@ -27,6 +27,8 @@ icecast/
 
 # configurations
 .vscode/
+*config.json
+website/backend/*.pd
 
 # production
 /build

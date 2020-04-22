@@ -10,12 +10,9 @@ cleanup() {
 # trap when EXIT signal is received
 trap cleanup EXIT TERM
 
-cd /home/pi/Documents/DIP
-source /home/pi/Documents/DIP/env/bin/activate
-cd website/backend
-python server.py & pids+=( "$!" )
-cd ..
-cd frontend
+cd /home/pi/Documents/DIP/website/backend
+../../env/bin/python3 server.py & pids+=( "$!" )
+cd /home/pi/Documents/DIP/website/frontend
 npm start & pids+=( "$!" )
 ip=`hostname -I | cut -d' ' -f1`
 address="http://${ip}:3000"

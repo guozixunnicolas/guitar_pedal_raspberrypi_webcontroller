@@ -160,10 +160,26 @@ if __name__ == "__main__":
         util.pi_to_discwebhook(f'Server Closing...', config.WEBHOOK_URL)
         sys.exit(0)
     signal.signal(signal.SIGTERM, signal_handler)
-    util.pi_to_discwebhook(f'Launching Audio Livestream Webserver on http://{ip}:{config.CLIENT_ENDPOINT_PORT}', config.WEBHOOK_URL)
-    util.pi_to_discwebhook(f'To Shutdown Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/shutdown', config.WEBHOOK_URL)
-    util.pi_to_discwebhook(f'To Restart Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/restart', config.WEBHOOK_URL)
-    #   Delay to let the file finish copying before starting server. Bad practice but eh.
+    util.pi_to_discwebhook(f'Server is up!', config.WEBHOOK_URL, {
+        'title': "Audio Livestream Webserver",
+        'description': f"[Shut Down](http://{ip}:{config.API_ENDPOINT_PORT}/shutdown) | [Restart](http://{ip}:{config.API_ENDPOINT_PORT}/restart)",
+        'url': f'http://{ip}:{config.CLIENT_ENDPOINT_PORT}',
+        'image': {
+            'url': 'https://icons.iconarchive.com/icons/alecive/flatwoken/512/Apps-Volume-Equalizer-icon.png' 
+        },
+        'author': {
+            'name': 'raspberrypi',
+            'icon_url': 'https://cdn.icon-icons.com/icons2/2108/PNG/512/raspberry_pi_icon_130847.png',
+            'url': 'https://www.raspberrypi.org/'
+        },
+        'footer': {
+            'text': f'DIP EE040 | Created in React, PureData and Python'
+        },
+        'color': 0x54ed4e
+    })
+    # util.pi_to_discwebhook(f'To Shutdown Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/shutdown', config.WEBHOOK_URL)
+    # util.pi_to_discwebhook(f'To Restart Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/restart', config.WEBHOOK_URL)
+    #   Delay to not abuse Discord API
     time.sleep(3)
     #   Run Webserver
     socketio.run(app, host="0.0.0.0", port=config.API_ENDPOINT_PORT)
