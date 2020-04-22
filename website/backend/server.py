@@ -24,6 +24,16 @@ joined_users = {}
 conn_port = set([config.CLIENT_ENDPOINT_PORT, config.API_ENDPOINT_PORT, config.STREAM_ENDPOINT_PORT])
 pd_users_process = {}
 
+@app.route('/shutdown')
+def shutdown():
+    util.pi_to_discwebhook('Shutting down Pi...', config.WEBHOOK_URL)
+    return(util.shut_down_pi())
+
+@app.route('/restart')
+def restart():
+    util.pi_to_discwebhook('Restarting Pi...', config.WEBHOOK_URL)
+    return(util.restart_pi())
+
 @socketio.on("connect")
 def on_connect():
     new_user = User(request.sid, request, util.unique_random_n_digits(4, conn_port))
@@ -141,6 +151,17 @@ if __name__ == "__main__":
         shutil.copyfile(file, f'./{file_name}')
         if file_name == 'main.pd':
             shutil.copyfile(file, './base.pd')
+    
+    import signal
+    import sys
 
+    def signal_handler(sig, frame):
+        util.pi_to_discwebhook(f'Server Closing...', config.WEBHOOK_URL)
+        sys.exit(0)
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    util.pi_to_discwebhook(f'Launching Audio Livestream Webserver on http://{ip}:{config.CLIENT_ENDPOINT_PORT}', config.WEBHOOK_URL)
+    util.pi_to_discwebhook(f'To Shutdown Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/shutdown', config.WEBHOOK_URL)
+    util.pi_to_discwebhook(f'To Restart Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/restart', config.WEBHOOK_URL)
     #   Run Webserver
     socketio.run(app, host="0.0.0.0", port=config.API_ENDPOINT_PORT)

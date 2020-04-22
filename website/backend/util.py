@@ -27,6 +27,52 @@ def iterateFilesFromDir(path: str, file_type: str = None):
             else:
                 yield os.path.join(root, file)
 
+def shut_down_pi():
+    import os
+    isPi = os.uname()[1] == 'raspberrypi'
+    if isPi:
+        command = "/usr/bin/sudo /sbin/shutdown -h now"
+        import subprocess
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        output = process.communicate()[0]
+        return f'Shutting down with code {output}'
+    else:
+        return 'Not running on raspberrypi, aborting shutdown'
+
+def restart_pi():
+    import os
+    isPi = os.uname()[1] == 'raspberrypi'
+    if isPi:
+        command = "/usr/bin/sudo /sbin/shutdown -r now"
+        import subprocess
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        output = process.communicate()[0]
+        return f'Restarting with code {output}'
+    else:
+        return 'Not running on raspberrypi, aborting restart'
+
+def pi_to_discwebhook(message: str, url: str) -> str:
+    import os
+    isPi = os.uname()[1] == 'raspberrypi'
+    if isPi:
+        import requests
+        import json
+        content = '{"content": $msg_content}'
+        content.replace('$msg_content', f'"{message}"')
+        header = {'Content-Type': 'application/json'}
+        data = {}
+        data["content"] = message
+        result = requests.post(url=url, data=json.dumps(data), headers=header)
+        try:
+            result.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            print(err)
+        else:
+            print("Payload delivered successfully, code {}.".format(result.status_code))
+            return "Sent to Discord succesfully code {}.".format(result.status_code)
+    else:
+        return None
+
 if __name__ == "__main__":
     import timeit
     print(timeit.timeit("unique_random_n_digits(1, {1, 2, 3, 4, 5, 6, 7, 8})", setup="from __main__ import unique_random_n_digits", number=10000))
