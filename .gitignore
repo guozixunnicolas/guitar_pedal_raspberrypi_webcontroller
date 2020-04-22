@@ -25,6 +25,9 @@ icecast/
 # secrets
 *secret.py
 
+# configurations
+.vscode/
+
 # production
 /build
 
