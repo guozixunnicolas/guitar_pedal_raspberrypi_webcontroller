@@ -14,9 +14,16 @@ def unique_random_n_digits(digit: int, cur_digit: set()):
         return num
 
 def get_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]
+    error = True
+    while error:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+            error = False
+        except OSError:
+            error = True
+    return ip
     
 def iterateFilesFromDir(path: str, file_type: str = None):
     for root, _, files in os.walk(path):
