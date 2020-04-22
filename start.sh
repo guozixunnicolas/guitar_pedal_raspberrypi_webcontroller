@@ -11,7 +11,7 @@ cleanup() {
 trap cleanup EXIT TERM
 
 cd /home/pi/Documents/DIP/website/backend
-../../env/bin/activate/python3 server.py & pids+=( "$!" )
+../../env/bin/python3 server.py & pids+=( "$!" )
 cd /home/pi/Documents/DIP/website/frontend
 npm start & pids+=( "$!" )
 ip=`hostname -I | cut -d' ' -f1`
