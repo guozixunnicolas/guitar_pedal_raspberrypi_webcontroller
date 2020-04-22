@@ -1,4 +1,5 @@
 import json
+import secret
 #   Stream
 N_CHUNKS = 1
 
@@ -7,6 +8,9 @@ CHANNELS = 2
 RATE = 44100
 CHUNK = 1536
 BITS_PER_SAMPLE = 16
+
+#   Discord Webhook
+WEBHOOK_URL = secret.DISCORD_WEBHOOK
 
 #   Webserver Config
 API_ENDPOINT_PORT = 5000
