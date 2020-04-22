@@ -139,6 +139,7 @@ if __name__ == "__main__":
     import shutil
     import os
     import ntpath
+    import time
     with open('../frontend/src/config.json', mode='w') as file:
         json.dump({    
             "endpoint_port": str(config.API_ENDPOINT_PORT),
@@ -163,5 +164,7 @@ if __name__ == "__main__":
     util.pi_to_discwebhook(f'Launching Audio Livestream Webserver on http://{ip}:{config.CLIENT_ENDPOINT_PORT}', config.WEBHOOK_URL)
     util.pi_to_discwebhook(f'To Shutdown Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/shutdown', config.WEBHOOK_URL)
     util.pi_to_discwebhook(f'To Restart Pi, go to http://{ip}:{config.API_ENDPOINT_PORT}/restart', config.WEBHOOK_URL)
+    #   Delay to let the file finish copying before starting server. Bad practice but eh.
+    time.sleep(1)
     #   Run Webserver
     socketio.run(app, host="0.0.0.0", port=config.API_ENDPOINT_PORT)
