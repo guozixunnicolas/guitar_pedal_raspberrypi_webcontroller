@@ -9,6 +9,7 @@ import EqualizerButton from './components/EqualizerBar';
 import config from './config.json';
 import VoiceRecognition from './components/VoiceRecognition';
 import Canvas from './components/Canvas'
+import Button from './components/Button';
 
 class App extends React.Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class App extends React.Component {
             controls: {
                 equalizer: {
                     value: Array(8).fill(1),
-                    min: 1,
+                    min: 0,
                     max: 10,
                     step: 1
                 },
@@ -84,6 +85,7 @@ class App extends React.Component {
                 },
             },
             isStreaming: false,
+            isVisualizing: false,
             streamSource: null,
             rawSource: null,
             fieldsetRef: React.createRef(),
@@ -182,14 +184,15 @@ class App extends React.Component {
                     {this.generateControls()}
                     <EqualizerButton onClick={(isUserFirstJoin) => this.handleUserJoin(isUserFirstJoin)} />
                     {this.state.isStreaming && <audio crossOrigin="anonymous" autoPlay src={this.state.streamSource} id='audio_stream_data' ref={this.state.streamRef} />}
-                    {this.state.isStreaming && <audio crossOrigin="anonymous" autoPlay muted={true} src={this.state.rawSource} id='audio_stream_raw' ref={this.state.rawRef} />}
+                    {this.state.isStreaming && <audio crossOrigin="anonymous" autoPlay src={this.state.rawSource} id='audio_stream_raw' ref={this.state.rawRef} />}
+                    <Button onChange={(e) => this.setState({ isVisualizing: true })} value={"Show Graph"} />
+
                 </fieldset>
-                {/* <VoiceRecognition></VoiceRecognition>
-                {this.state.isStreaming && this.state.streamRef.current && this.state.rawRef.current &&
+                {this.state.isStreaming && this.state.streamRef.current && this.state.rawRef.current && this.state.isVisualizing &&
                     <fieldset>
                         <Canvas rawSource={this.state.rawRef.current} streamSource={this.state.streamRef.current} />
                     </fieldset>
-                } */}
+                }
             </div>
         )
     }
