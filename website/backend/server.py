@@ -79,7 +79,6 @@ def set_control(control_data: dict):
         user = conn_users.get(user_id)
         user.audio_conf.update(control_data)
         pd_socket = Pd('localhost', user.port)
-        # pd_socket.send(f'{control_data["reverb"]} {control_data["delay"]} {control_data["damp"]}')
         pd_socket.send_async(user.audio_conf_as_pd_payload())
         print('Sending payload as')
         print(user.audio_conf_as_pd_payload())
@@ -101,7 +100,6 @@ def on_join():
         print(f'{user.id} joined the stream')
         #   Set new pd patch file
         pd_patch = Pd_Patch(base_pd_path)
-        #   TODO    Set mountpoint etc
         #   Stream mountpoint is the 1st in the file
         #   Raw Audio mountpoint is the 2nd in the file
         #   1-based index, not 0
@@ -160,9 +158,10 @@ if __name__ == "__main__":
         util.pi_to_discwebhook(f'Server Closing...', config.WEBHOOK_URL)
         sys.exit(0)
     signal.signal(signal.SIGTERM, signal_handler)
+    api_address = f'http://{ip}:{config.API_ENDPOINT_PORT}'
     util.pi_to_discwebhook(f'Server is up!', config.WEBHOOK_URL, {
         'title': "Audio Livestream Webserver",
-        'description': f"[Shut Down](http://{ip}:{config.API_ENDPOINT_PORT}/shutdown) | [Restart](http://{ip}:{config.API_ENDPOINT_PORT}/restart)",
+        'description': f"[Shut Down]({api_address}/shutdown) | [Restart]({api_address}/restart)",
         'url': f'http://{ip}:{config.CLIENT_ENDPOINT_PORT}',
         'image': {
             'url': 'https://icons.iconarchive.com/icons/alecive/flatwoken/512/Apps-Volume-Equalizer-icon.png' 
