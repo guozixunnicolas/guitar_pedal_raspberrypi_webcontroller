@@ -88,7 +88,9 @@ def set_control(control_data: dict):
 
 @socketio.on('user_join')
 def on_join():
-    # TODO
+    #   When the user join, check if this user is connected and not in the joined user list.
+    #   Add them if so, and write a new pd patch file which will be fed into a subprocess opening this pd patch.
+    #   Emit the stream source.
     user_id = request.sid
     if user_id not in joined_users and user_id in conn_users:
         user: User
