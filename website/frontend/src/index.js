@@ -7,7 +7,6 @@ import Control from './components/ControlBar';
 import Bang from './components/ControlBang';
 import EqualizerButton from './components/EqualizerBar';
 import config from './config.json';
-import VoiceRecognition from './components/VoiceRecognition';
 import Canvas from './components/Canvas'
 import Button from './components/Button';
 
