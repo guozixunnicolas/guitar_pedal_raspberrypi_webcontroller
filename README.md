@@ -3,6 +3,8 @@
 A Live Audio Streaming Platform. This enables a speaker to stream
 the audio live and have the audio control on a webserver which everyone on the same network can access, hence a "Smart" IOT.
 
+Please find the demo video [here](https://youtu.be/slG2O9yKhXc).
+
 ## Getting Started
 
 1. Install [Pure Data](https://puredata.info/).
